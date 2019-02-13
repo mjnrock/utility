@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/metro/4.2.36/css/metro.min.css" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tachyons/4.11.1/tachyons.min.css" />
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/metro/4.2.36/js/metro.min.js"></script>
+
+		<title>Test Page</title>
+	</head>
+	<body>
+		<script type="module">
+			import Database from "./js/database/package.js";
+
+			let db = new Database.Table(["a", "b", "c", "d", "e"]);
+			// db.AddColumn("test").RemoveColumn("test");
+			// db.Elements.Set(2, 3, "cats");
+			// db.Elements.Set(4, 1, "dogs");
+
+			db.Insert({ a: "ferrets234", c: "cheesfdsvdfge" });
+			db.Insert({ a: "ferrefed234ts", c: "cheese23423" });
+			db.Insert({ a: "ferretasdfsds", c: "chee213414se" });
+			db.Insert({ a: "fer123412rets", c: "cheefsdfse" });
+
+			console.log(db.Select(["a"]));
+			db.Update({ a: "cats" }, (x, y, key, value) => y === 3);
+			db.Change({ a: "fish" }, 3);
+			console.log(db.Select(["a"]));
+
+			// db.Elements.ForEach((...args) => console.log(...args));
+			// let map = db.Elements.Map((x, y, k, v, e, i, a, t) => v);
+			// console.log(map);
+		</script>
+
+		<div class="container">
+			<p>This is a test</p>
+		</div>
+	</body>
+</html>
