@@ -6,10 +6,10 @@ class Organelle extends Subscribable {
         super();
 
         if(typeof type === "function") {
-            this.Type = Organelle.EnumProcessType.FEED;
+            this.Type = Organelle.EnumProcessType.FLOW;
             this.Sequence = [ type, ...callbacks ];
         } else {
-            this.Type = type || Organelle.EnumProcessType.FEED;
+            this.Type = type || Organelle.EnumProcessType.FLOW;
             this.Sequence = callbacks;
         }
     }
@@ -22,7 +22,7 @@ class Organelle extends Subscribable {
         };
     }
 
-    Metabolize(payload, asObj = true) {
+    Metabolize(payload) {
 		this.Invoke(Organelle.EnumEventType.BEGIN, payload);
         
         let output = [];
