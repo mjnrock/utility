@@ -1,5 +1,5 @@
 import { Subject } from "rxjs";
-import { NewUUID } from "./utility/Helper";
+import { NewUUID } from "./../utility/Helper";
 
 class Subscribable {
     constructor(state = {}) {
@@ -17,8 +17,8 @@ class Subscribable {
 	}
 	SetState(state) {
 		this.Invoke(Subscribable.EnumEventType.UPDATE, {
-			OldState: Object.freeze(this.State),
-			NewState: Object.freeze(state)
+			oldState: Object.freeze(this.State),
+			state: Object.freeze(state)
 		});
 
 		this.State = Object.freeze(state);
@@ -29,19 +29,17 @@ class Subscribable {
 	Invoke(type, args = {}) {
 		this.Subject$.next({
 			type: type,
-			caller: this,
-			data: {
-				...args
-			}
+			scope: this,
+			data: args
 		});
 
 		return this;
-	}
+    }
 
 	Subscribe(subscriber) {
 		if(typeof subscriber === "object") {
 			this.Subject$.subscribe({
-				next: (...args) => subscriber.next(subscriber, ...args),
+				next: (payload) => subscriber.next(payload),
 				error: subscriber.error,
 				complete: subscriber.complete
 			});
@@ -50,7 +48,7 @@ class Subscribable {
 		}
 
 		this.Invoke(Subscribable.EnumEventType.SUBSCRIBE, {
-			Subscriber: subscriber
+			subscriber: subscriber
 		});
 
 		return this;
@@ -67,17 +65,14 @@ class Subscribable {
 		}
 
 		this.Invoke(Subscribable.EnumEventType.UNSUBSCRIBE, {
-			Unsubscriber: unsubscriber
+			unsubscriber: unsubscriber
 		});
 
 		return this;
     }
 
-	next(caller, obj) {
-		return {
-			caller,
-			obj
-		};
+	next(payload) {
+		return payload;
 	}
 	error(err) {
 		return err;
