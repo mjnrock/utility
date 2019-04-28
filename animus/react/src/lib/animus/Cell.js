@@ -16,12 +16,13 @@ class Cell extends Subscribable {
                 }
         
                 return (...args) => {
-                    if(cell.Behaviors[prop]) {
+                    let lookup = prop.replace("ƒ", "");     // ALT+159 = ƒ
+                    if(cell.Behaviors[lookup]) {
                         if(args.length > 1) {
-                            return cell.Behaviors[prop].callback(...args);
+                            return cell.Behaviors[lookup].callback(...args);
                         }
 
-                        return cell.Behaviors[prop].callback(...cell.Behaviors[prop].args);
+                        return cell.Behaviors[lookup].callback(...cell.Behaviors[lookup].args);
                     }
                 }
             }

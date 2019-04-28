@@ -5,13 +5,14 @@ import Cell from "./lib/animus/Cell";
 
 let c = new Cell();
 
-c.Learn("cat", (...args) => {
+c.Learn("print", (...args) => {
     console.log(`ARGS: ${ args }`);
 }, 3, 5, 6);
 
 // console.log(c);
 
-c.cat();//1, 2, 3, 4, 5);
+c.ƒprint(1, 2, 3, 4, 5);
+c.ƒprint();
 
 class App extends Component {
     render() {
