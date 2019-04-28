@@ -28,25 +28,29 @@ class Organelle extends Subscribable {
         let output = [];
         for(let i in this.Sequence) {
             i = +i;
-            let step = this.Sequence[i];
+            let step = this.Sequence[i],
+                result;
             
             if(typeof step === "function") {
                 if(this.Type === Organelle.EnumProcessType.FEED) {
                     if(i === 0) {
-                        output.push(this.PackageMetabolite(payload, step(payload), i));   
+                        result = step(payload);
+                        output.push(this.PackageMetabolite(payload, result, i));   
                     } else {
-                        let val = output[i - 1].out;
-                        output.push(this.PackageMetabolite(val, step(val), i));   
+                        let val = output[i - 1].out,
+                            result = step(val);
+                        output.push(this.PackageMetabolite(val, result, i));   
                     }
                 } else if(this.Type === Organelle.EnumProcessType.FLOW) {
-                    output.push(this.PackageMetabolite(payload, step(payload), i));   
+                    result = step(payload);
+                    output.push(this.PackageMetabolite(payload, result, i));   
                 }
             } else {
                 console.warn("[Operation Aborted]: Sequence contains a non-function");
             }
 
             
-            this.Invoke(Organelle.EnumEventType.PROCESS, output);
+            this.Invoke(Organelle.EnumEventType.PROCESS, result);
         }
 
 		this.Invoke(Organelle.EnumEventType.END, output);

@@ -2,10 +2,7 @@ import Subscribable from "./Subscribable";
 import { NewUUID } from "../utility/Helper";
 import { cloneDeep } from "lodash";
 
-import Enzyme from "./Enzyme";
-import OmegaEnzyme from "./OmegaEnzyme";
-import BetaEnzyme from "./BetaEnzyme";
-import GammaEnzyme from "./GammaEnzyme";
+import Enzymes from "./enzyme/package";
 
 class Cell extends Subscribable {
     constructor(state = {}) {
@@ -13,24 +10,28 @@ class Cell extends Subscribable {
 
         this.Behaviors = {};
 
-        return new Proxy(this, {
-            get: function(cell, prop) {
-                if(prop in cell) {        
-                    return cell[prop];
-                }
+        // return new Proxy(this, {
+        //     get: function(cell, prop) {
+        //         if(prop in cell) {        
+        //             return cell[prop];
+        //         }
+                
+        //         if(prop === "_target") {
+        //             return cell;
+        //         }
         
-                return (...args) => {
-                    let lookup = prop.replace("ƒ", "");     // ALT+159 = ƒ
-                    if(cell.Behaviors[lookup]) {
-                        if(args.length > 1) {
-                            return cell.Behaviors[lookup].callback(...args);
-                        }
+        //         return (...args) => {
+        //             let lookup = String(prop).replace("ƒ", "");     // ALT+159 = ƒ
+        //             if(cell.Behaviors[lookup]) {
+        //                 if(args.length > 1) {
+        //                     return cell.Behaviors[lookup].callback(...args);
+        //                 }
 
-                        return cell.Behaviors[lookup].callback(...cell.Behaviors[lookup].args);
-                    }
-                }
-            }
-        });
+        //                 return cell.Behaviors[lookup].callback(...cell.Behaviors[lookup].args);
+        //             }
+        //         }
+        //     }
+        // });
     }
 
     Learn(key, fn, ...defaultArgs) {
@@ -70,12 +71,11 @@ class Cell extends Subscribable {
     Metabolize(...enzymes) {
         this.Invoke(Cell.EnumEventType.BEGIN, enzymes);
         
+        let output = [];
         for(let i in enzymes) {
             let enzyme = enzymes[i];
             
-            if(enzyme instanceof Enzyme) {
-                let result = enzyme.Activate(this);
-
+            if(enzyme instanceof Enzymes.Enzyme) {
                 // if(enzyme instanceof OmegaEnzyme || enzyme.Type === Enzyme.EnumType.OMEGA) {
                 //     //  TODO
                 // } else if(enzyme instanceof BetaEnzyme || enzyme.Type === Enzyme.EnumType.BETA) {
@@ -84,18 +84,27 @@ class Cell extends Subscribable {
                 //     //  TODO
                 // }
                 
+                let result = enzyme.Activate(this);
+                output.push([ enzyme.State.type, result ]);
+
                 this.Invoke(Cell.EnumEventType.PROCESS, result);
             }
         }
 
-        this.Invoke(Cell.EnumEventType.END, this);
+        this.Invoke(Cell.EnumEventType.END, output);
     }
 }
 
+// Cell.EnumEventType = Object.freeze({
+//     BEGIN: NewUUID(),
+//     PROCESS: NewUUID(),
+//     END: NewUUID()
+// });
+
 Cell.EnumEventType = Object.freeze({
-    BEGIN: NewUUID(),
-    PROCESS: NewUUID(),
-    END: NewUUID()
+    BEGIN: "BEGIN",
+    PROCESS: "PROCESS",
+    END: "END"
 });
 
 export default Cell;

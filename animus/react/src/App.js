@@ -1,18 +1,27 @@
 import React, { Component } from "react";
 
+import Enzymes from "./lib/animus/enzyme/package";
 import Organelle from "./lib/animus/Organelle";
 import Cell from "./lib/animus/Cell";
 
 let c = new Cell();
 
-c.Learn("print", (...args) => {
-    console.log(`ARGS: ${ args }`);
-}, 3, 5, 6);
+c.Subscribe({
+    next: (payload) => console.log(payload)
+});
 
-// console.log(c);
+let beta = new Enzymes.BetaEnzyme("print", (cell, payload) => {
+    console.log(`ARGS`, cell, payload);
+    console.log("-------------");
+    
+    return payload;
+}, 8, 16, 32),
+    gamma = new Enzymes.GammaEnzyme("print", 999),
+    omega = new Enzymes.OmegaEnzyme("print");
 
-c.ƒprint(1, 2, 3, 4, 5);
-c.ƒprint();
+c.Metabolize(beta);
+c.Metabolize(omega);
+c.Metabolize(gamma);
 
 class App extends Component {
     render() {
