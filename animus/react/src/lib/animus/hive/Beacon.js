@@ -4,29 +4,49 @@ class Beacon extends Subscribable {
 	constructor(state = {}) {
 		super(state);
 
-		this.Registry = {};
+		this._handlers = {};
 	}
     
-    Attach(_enum, callback) {
-        this.Registry[_enum] = callback;
+    Attach(event, callback) {
+        this._handlers[event] = callback;
 
         return this;
     }
-    Detach(_enum) {
-        delete this.Registry[_enum];
+    Detach(event) {
+        delete this._handlers[event];
 
         return this;
     }
 
-	next(caller, obj) {
-        try {
-            this.Registry[obj.type](obj);
-        } catch(e) {
-            console.warn(`Nothing attached to "${ obj.type }"`);
+    SubscribeTo(...args) {
+        for(let i in args) {
+            let subscribable = args[i];
+
+            subscribable.Subscribe(this);
         }
+    }
+    UnsubscribeTo(...args) {
+        for(let i in args) {
+            let subscribable = args[i];
 
-		return obj;
-	}
+            subscribable.Unsubscribe(this);
+        }
+    }
+
+    next(payload) {
+        console.log(payload);
+    }
+
+    //TODO Make this work for new version (De/Attach alter default event handlers/routers)
+	// next(caller, obj) {
+    //     try {
+    //         this._registry[ obj.type ](obj);
+    //     } catch(e) {
+    //         console.warn(`Nothing attached to "${ obj.type }"`);
+    //     }
+
+	// 	return obj;
+	// }
 }
 
 export default Beacon;

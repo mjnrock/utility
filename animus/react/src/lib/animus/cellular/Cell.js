@@ -9,10 +9,10 @@ class Cell extends Subscribable {
         super(state);
 
         this._actions = {};
-        this.ƒ = (() => new Proxy(this, {
+        this.ƒ = (() => new Proxy(this, {        // ALT+159 = ƒ
             get: function(cell, prop) {
                 if(prop in cell) {        
-                    return cell[prop];
+                    return cell[ prop ];
                 }
                 
                 if(prop === "_target") {
@@ -20,13 +20,21 @@ class Cell extends Subscribable {
                 }
         
                 return (...args) => {
-                    let lookup = String(prop).replace("ƒ", "");     // ALT+159 = ƒ
-                    if(cell._actions[lookup]) {
-                        if(args.length > 1) {
-                            return cell._actions[lookup].callback(...args);
+                    if(cell._actions[ prop ]) {
+                        let ret;
+
+                        if(args.length > 0) {
+                            ret = cell._actions[ prop ].callback(...args);
+                        } else {
+                            ret = cell._actions[ prop ].callback(...cell._actions[ prop ].args);
                         }
 
-                        return cell._actions[lookup].callback(...cell._actions[lookup].args);
+                        cell.Invoke(Cell.EnumEventType.ACTION, {
+                            action: prop,
+                            result: ret
+                        });
+
+                        return ret;
                     }
                 }
             }
@@ -95,12 +103,14 @@ class Cell extends Subscribable {
 }
 
 // Cell.EnumEventType = Object.freeze({
+//     ACTION: NewUUID(),
 //     BEGIN: NewUUID(),
 //     PROCESS: NewUUID(),
 //     END: NewUUID()
 // });
 
 Cell.EnumEventType = Object.freeze({
+    ACTION: "ACTION",
     BEGIN: "BEGIN",
     PROCESS: "PROCESS",
     END: "END"

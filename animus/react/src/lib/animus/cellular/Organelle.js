@@ -1,6 +1,8 @@
 import Subscribable from "./../Subscribable";
 import { NewUUID } from "./../utility/Helper";
 
+//! Metabolites sort of make this useless.  Find alternative use and code; there is value somewhere in a sequencer.
+
 class Organelle extends Subscribable {
     constructor(type, ...callbacks) {
         super();

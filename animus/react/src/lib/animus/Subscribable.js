@@ -83,7 +83,7 @@ class Subscribable {
 
         let hash = 0;
 
-        if (json.length == 0) {
+        if (json.length === 0) {
             return hash;
         }
 
@@ -96,10 +96,16 @@ class Subscribable {
     }
 }
 
+// Subscribable.EnumEventType = Object.freeze({
+// 	UPDATE: NewUUID(),
+//     SUBSCRIBE: NewUUID(),
+//     UNSUBSCRIBE: NewUUID()
+// });
+
 Subscribable.EnumEventType = Object.freeze({
-	UPDATE: "subscribable-onUpdate",
-    SUBSCRIBE: "subscribable-onSubscribe",
-    UNSUBSCRIBE: "subscribable-onUnsubscribe"
+	UPDATE: "UPDATE",
+    SUBSCRIBE: "SUBSCRIBE",
+    UNSUBSCRIBE: "UNSUBSCRIBE"
 });
 
 export default Subscribable;
