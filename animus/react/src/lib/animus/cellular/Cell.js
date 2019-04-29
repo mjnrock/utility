@@ -1,41 +1,40 @@
 
 import { cloneDeep } from "lodash";
 
-import Metabolites from "./package";
-import Subscribable from "./../hive/Subscribable";
+import Cellular from "./package";
+import Subscribable from "./../Subscribable";
 
 class Cell extends Subscribable {
     constructor(state = {}) {
         super(state);
 
-        this.Behaviors = {};
-
-        // return new Proxy(this, {
-        //     get: function(cell, prop) {
-        //         if(prop in cell) {        
-        //             return cell[prop];
-        //         }
+        this._actions = {};
+        this.ƒ = (() => new Proxy(this, {
+            get: function(cell, prop) {
+                if(prop in cell) {        
+                    return cell[prop];
+                }
                 
-        //         if(prop === "_target") {
-        //             return cell;
-        //         }
+                if(prop === "_target") {
+                    return cell;
+                }
         
-        //         return (...args) => {
-        //             let lookup = String(prop).replace("ƒ", "");     // ALT+159 = ƒ
-        //             if(cell.Behaviors[lookup]) {
-        //                 if(args.length > 1) {
-        //                     return cell.Behaviors[lookup].callback(...args);
-        //                 }
+                return (...args) => {
+                    let lookup = String(prop).replace("ƒ", "");     // ALT+159 = ƒ
+                    if(cell._actions[lookup]) {
+                        if(args.length > 1) {
+                            return cell._actions[lookup].callback(...args);
+                        }
 
-        //                 return cell.Behaviors[lookup].callback(...cell.Behaviors[lookup].args);
-        //             }
-        //         }
-        //     }
-        // });
+                        return cell._actions[lookup].callback(...cell._actions[lookup].args);
+                    }
+                }
+            }
+        }))();
     }
 
     Learn(key, fn, ...defaultArgs) {
-        this.Behaviors[key] = Object.freeze({
+        this._actions[key] = Object.freeze({
             key: key,
             callback: fn,
             args: defaultArgs
@@ -44,16 +43,16 @@ class Cell extends Subscribable {
         return this;
     }
     Unlearn(key) {
-        delete this.Behaviors[key];
+        delete this._actions[key];
 
         return this;
     }
     
     Teach(key, student, pbr = false) {
         if(pbr) {
-            student.Behaviors[key] = this.Behaviors[key];
+            student._actions[key] = this._actions[key];
         } else {
-            student.Behaviors[key] = cloneDeep(this.Behaviors[key]);
+            student._actions[key] = cloneDeep(this._actions[key]);
         }
 
         return this;
@@ -61,10 +60,10 @@ class Cell extends Subscribable {
 
 	Perform(key, ...args) {
 		if(args.length >= 0) {
-			return this.Behaviors[key].callback(this, ...args);
+			return this._actions[key].callback(this, ...args);
         }
         
-        return this.Behaviors[key].callback(this, ...this.Behaviors[key].args);            
+        return this._actions[key].callback(this, ...this._actions[key].args);            
 	}
 
     Metabolize(...metabolites) {
@@ -74,7 +73,7 @@ class Cell extends Subscribable {
         for(let i in metabolites) {
             let metabolite = metabolites[i];
             
-            if(metabolite instanceof Metabolites.Metabolite && metabolite.Status === true) {                
+            if(metabolite instanceof Cellular.Metabolite && metabolite._status === true) {                
                 let result = metabolite.Activate(this);
 
                 output.push([ metabolite.State.type, result ]);

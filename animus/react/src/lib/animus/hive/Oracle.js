@@ -1,5 +1,4 @@
-import Subscribable from "./Subscribable";
-import { NewUUID } from "./../utility/Helper";
+import Subscribable from "./../Subscribable";
 
 class Oracle extends Subscribable {
 

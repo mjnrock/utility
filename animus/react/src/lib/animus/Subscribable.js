@@ -1,15 +1,14 @@
 import { Subject } from "rxjs";
-import { NewUUID } from "./../utility/Helper";
+import { NewUUID } from "./utility/Helper";
 
 class Subscribable {
     constructor(state = {}) {
-        this.UUID = NewUUID();
-        this.Subject$ = new Subject();
-		this.Subscriptions = {};
-
-		this.State = Object.freeze(state);
-		
+        this._id = NewUUID();
+        this._subject$ = new Subject();
+		this._subscriptions = {};
 		this._origin = Date.now();
+
+		this.State = Object.freeze(state);		
     }
 
 	GetState() {
@@ -27,7 +26,7 @@ class Subscribable {
 	}
 
 	Invoke(type, args = {}) {
-		this.Subject$.next({
+		this._subject$.next({
 			type: type,
 			scope: this,
 			data: args
@@ -38,35 +37,31 @@ class Subscribable {
 
 	Subscribe(subscriber) {
 		if(typeof subscriber === "object") {
-			this.Subject$.subscribe({
+			this._subject$.subscribe({
 				next: (payload) => subscriber.next(payload),
 				error: subscriber.error,
 				complete: subscriber.complete
 			});
 
-			this.Subscriptions[ subscriber.UUID ] = subscriber;
+			this._subscriptions[ subscriber._id ] = subscriber;
 		}
 
-		this.Invoke(Subscribable.EnumEventType.SUBSCRIBE, {
-			subscriber: subscriber
-		});
+		this.Invoke(Subscribable.EnumEventType.SUBSCRIBE, subscriber);
 
 		return this;
 	}
 	Unsubscribe(unsubscriber) {
 		if(typeof unsubscriber === "string" || unsubscriber instanceof String) {
-			this.Subscriptions[ unsubscriber ].unsubscribe();
+			this._subscriptions[ unsubscriber ].unsubscribe();
 
-			delete this.Subscriptions[ unsubscriber ];
+			delete this._subscriptions[ unsubscriber ];
 		} else {
-			this.Subscriptions[ unsubscriber.UUID ].unsubscribe();
+			this._subscriptions[ unsubscriber._id ].unsubscribe();
 
-			delete this.Subscriptions[ unsubscriber.UUID ];
+			delete this._subscriptions[ unsubscriber._id ];
 		}
 
-		this.Invoke(Subscribable.EnumEventType.UNSUBSCRIBE, {
-			unsubscriber: unsubscriber
-		});
+		this.Invoke(Subscribable.EnumEventType.UNSUBSCRIBE, unsubscriber);
 
 		return this;
     }

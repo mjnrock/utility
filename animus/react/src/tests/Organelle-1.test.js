@@ -1,6 +1,7 @@
-// Subscription Test
+import Animus from "./../lib/animus/package";
 
-let o = new Organelle(Organelle.EnumProcessType.FEED,
+// Subscription Test
+let o = new Animus.Cellular.Organelle(Animus.Cellular.Organelle.EnumProcessType.FEED,
     (payload) => {
         if(Array.isArray(payload)) {
             return payload.reduce((a, c, i) => a + c);
@@ -10,14 +11,14 @@ let o = new Organelle(Organelle.EnumProcessType.FEED,
         return payload * 5;
     }
 );
-let org = new Organelle(
+let org = new Animus.Cellular.Organelle(
     (payload) => {
         console.log(payload);
     }
 );
 
-o.UUID = "o";
-org.UUID = "org";
+o._id = "o";
+org._id = "org";
 
 o.Subscribe(org);
 o.Metabolize([ 5, 5, 3 ]);

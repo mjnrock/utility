@@ -1,4 +1,4 @@
-import Subscribable from "./Subscribable";
+import Subscribable from "./../Subscribable";
 import Beacon from "./Beacon";
 import Oracle from "./Oracle";
 

@@ -7,7 +7,7 @@ class OmegaMetabolite extends Metabolite {
     
     Activate(cell) {
         return super.Activate.call(this, cell, () => {
-            this.SetData(cell.Behaviors[ this.State.key ]);
+            this.SetData(cell._actions[ this.State.key ]);
 
             return this.GetData();
         });

@@ -2,8 +2,9 @@ import { NewUUID } from "./../utility/Helper";
 
 class Metabolite {
     constructor(type, key, data) {
-        this.UUID = NewUUID();
-        this.Status = true;
+        this._id = NewUUID();
+        this._status = true;
+        
         this.State = Object.freeze({
             type,
             key,
@@ -47,10 +48,10 @@ class Metabolite {
     }
 
     Activate(cell, hook) {
-        if(this.Status === true && typeof hook === "function") {
+        if(this._status === true && typeof hook === "function") {
             let ret = hook();
 
-            this.Status = false;
+            this._status = false;
 
             return ret !== void 0 ? ret : cell;
         }
@@ -66,7 +67,7 @@ class Metabolite {
     //         json = JSON.parse(json);
     //     }
 
-    //     this.UUID = json.UUID || NewUUID();
+    //     this._id = json._id || NewUUID();
     //     this.State = Object.freeze(json.State);
 
     //     return this;
