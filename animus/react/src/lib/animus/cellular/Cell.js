@@ -1,8 +1,8 @@
-import Subscribable from "./Subscribable";
-import { NewUUID } from "../utility/Helper";
+
 import { cloneDeep } from "lodash";
 
-import Metabolites from "./metabolite/package";
+import Metabolites from "./package";
+import Subscribable from "./../hive/Subscribable";
 
 class Cell extends Subscribable {
     constructor(state = {}) {
@@ -67,7 +67,6 @@ class Cell extends Subscribable {
         return this.Behaviors[key].callback(this, ...this.Behaviors[key].args);            
 	}
 
-    //TODO Invoke events here
     Metabolize(...metabolites) {
         this.Invoke(Cell.EnumEventType.BEGIN, metabolites);
         

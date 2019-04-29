@@ -11,12 +11,6 @@ class Metabolite {
         });
     }
 
-    MakeDirty() {
-        this.Status = false;
-
-        return this;
-    }
-
     GetType() {
         return this.State.type;
     }
