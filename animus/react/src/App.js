@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 
-import Cellular from "./lib/animus/cellular/package";
+import Animus from "./lib/animus/package";
 
-let c = new Cellular.Cell();
+let c = new Animus.Cellular.Cell();
 
 // c.Subscribe({
 //     next: (payload) => console.log(payload)
 // });
 
-let beta = new Cellular.BetaMetabolite("print", (cell, payload) => {
+let beta = new Animus.Cellular.BetaMetabolite("print", (cell, payload) => {
     console.log("-------------");
     console.log(cell);
     console.log(payload);
@@ -16,10 +16,10 @@ let beta = new Cellular.BetaMetabolite("print", (cell, payload) => {
 
     return payload;
 }, 8, 16, 32);
-let gamma = new Cellular.GammaMetabolite("print", {
+let gamma = new Animus.Cellular.GammaMetabolite("print", {
     cat: "Kiszka"
 });
-let omega = new Cellular.OmegaMetabolite("print");
+let omega = new Animus.Cellular.OmegaMetabolite("print");
 
 c.Metabolize(beta);
 c.Metabolize(omega);

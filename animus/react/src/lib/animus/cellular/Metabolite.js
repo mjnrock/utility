@@ -1,4 +1,4 @@
-import { NewUUID } from "../../utility/Helper";
+import { NewUUID } from "./../utility/Helper";
 
 class Metabolite {
     constructor(type, key, data) {

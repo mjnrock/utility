@@ -1,5 +1,5 @@
 import Subscribable from "./../hive/Subscribable";
-import { NewUUID } from "./../../utility/Helper";
+import { NewUUID } from "./../utility/Helper";
 
 class Organelle extends Subscribable {
     constructor(type, ...callbacks) {

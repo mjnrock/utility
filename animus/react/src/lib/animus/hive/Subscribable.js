@@ -1,5 +1,5 @@
 import { Subject } from "rxjs";
-import { NewUUID } from "../../utility/Helper";
+import { NewUUID } from "./../utility/Helper";
 
 class Subscribable {
     constructor(state = {}) {
