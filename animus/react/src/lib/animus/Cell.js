@@ -2,7 +2,7 @@ import Subscribable from "./Subscribable";
 import { NewUUID } from "../utility/Helper";
 import { cloneDeep } from "lodash";
 
-import Enzymes from "./enzyme/package";
+import Metabolites from "./metabolite/package";
 
 class Cell extends Subscribable {
     constructor(state = {}) {
@@ -68,30 +68,31 @@ class Cell extends Subscribable {
 	}
 
     //TODO Invoke events here
-    Metabolize(...enzymes) {
-        this.Invoke(Cell.EnumEventType.BEGIN, enzymes);
+    Metabolize(...metabolites) {
+        this.Invoke(Cell.EnumEventType.BEGIN, metabolites);
         
         let output = [];
-        for(let i in enzymes) {
-            let enzyme = enzymes[i];
+        for(let i in metabolites) {
+            let metabolite = metabolites[i];
             
-            if(enzyme instanceof Enzymes.Enzyme) {
-                // if(enzyme instanceof OmegaEnzyme || enzyme.Type === Enzyme.EnumType.OMEGA) {
-                //     //  TODO
-                // } else if(enzyme instanceof BetaEnzyme || enzyme.Type === Enzyme.EnumType.BETA) {
-                //     //  TODO
-                // } else if(enzyme instanceof GammaEnzyme || enzyme.Type === Enzyme.EnumType.GAMMA) {
-                //     //  TODO
-                // }
-                
-                let result = enzyme.Activate(this);
-                output.push([ enzyme.State.type, result ]);
+            if(metabolite instanceof Metabolites.Metabolite && metabolite.Status === true) {                
+                let result = metabolite.Activate(this);
 
-                this.Invoke(Cell.EnumEventType.PROCESS, result);
+                output.push([ metabolite.State.type, result ]);
+
+                this.Invoke(Cell.EnumEventType.PROCESS, {
+                    metabolite,
+                    result
+                });
             }
         }
 
-        this.Invoke(Cell.EnumEventType.END, output);
+        this.Invoke(Cell.EnumEventType.END, {
+            metabolites,
+            output
+        });
+
+        return metabolites;
     }
 }
 
