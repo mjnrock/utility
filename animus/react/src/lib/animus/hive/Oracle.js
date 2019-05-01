@@ -11,7 +11,21 @@ class Oracle extends Subscribable {
         this._organelles = Object.freeze(organelles);
     }
 
+    Endogenize(...organelles) {
+        let arr = [
+            ...this._organelles
+        ];
 
+        for(let i in organelles) {
+            let organelle = organelles[i];
+
+            arr.push(organelle);
+        }
+
+        this._organelles = Object.freeze(arr);
+
+        return this;
+    }
 }
 
 export default Oracle;
