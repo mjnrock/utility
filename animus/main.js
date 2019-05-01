@@ -27,5 +27,9 @@ app.get("/", (req, res) => {
 
 app.get("/validate", (req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
-	res.set("Content-Type", "Application/json");
+    res.set("Content-Type", "Application/json");
+    
+    res.send(JSON.stringify({
+        cat: "meow"
+    }));
 });
