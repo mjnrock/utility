@@ -117,7 +117,17 @@ Quantum.EnumType = Object.freeze({
     STRING: 3,
     ARRAY: 4,
     OBJECT: 5,
-    FUNCTION: 6
+    FUNCTION: 6,
+    COLLECTION: 7
+});
+
+Quantum.EnumAttributeType = Object.freeze({
+    TYPE: 1,
+    DATA: 2,
+    META: 3,
+    ID: 4,
+    KEY: 5,
+    ORIGIN: 6
 });
 
 export default Quantum;
