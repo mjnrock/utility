@@ -100,11 +100,7 @@ class Quantum {
         let q = new Quantum(
             json._type,
             json._data,
-            {
-                uuid: json._meta._id,
-                key: json._meta._key,
-                timestamp: json._meta._origin
-            }
+            ...json._meta
         );
 
         return q;

@@ -1,4 +1,5 @@
 import Quantum from "./Quantum";
+import QInt from "./QInt";
 
 class QCollection extends Quantum {
     constructor(data, key = null) {
@@ -9,11 +10,28 @@ class QCollection extends Quantum {
         return value instanceof QCollection || (value.type && value.type === Quantum.EnumType.COLLECTION);
     }
 
+    MakeTyped(type) {
+        if(QInt.Test(type)) {
+            this._meta._typed = type;
+
+            return this;
+        }
+
+        console.warn("[Operation Aborted]: Caught non-numeric enumeration as argument.");
+
+        return this;
+    }
+    MakeUntyped() {
+        delete this._meta._typed;
+
+        return this;
+    }
+
     Add(quantum) {
-        
+
     }
     Remove(quantum) {
-        
+
     }
     Find(value, searchType = Quantum.EnumAttributeType.KEY) {
 
