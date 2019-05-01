@@ -36,7 +36,7 @@ class Quantum {
                     data = JSON.parse(data);
                 }
 
-                this._data = data;
+                this.SetData(data);
 
                 return this;
             })
@@ -110,5 +110,14 @@ class Quantum {
         return q;
     }
 }
+
+Quantum.EnumType = Object.freeze({
+    BOOLEAN: 1,
+    INTEGER: 2,
+    STRING: 3,
+    ARRAY: 4,
+    OBJECT: 5,
+    FUNCTION: 6
+});
 
 export default Quantum;

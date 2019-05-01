@@ -7,14 +7,7 @@ import React, { Component } from "react";
 // eslint-disable-next-line
 import Animus from "./lib/animus/package";
 
-let q = new Animus.Quanta.Quantum("typeA", {
-    data1: 1,
-    data2: 2
-}, {
-    key: "fat"
-});
-
-console.log(q.GetData());
+let q = new Animus.Quanta.QString();
 q.FetchData("http://localhost:3087/validate").then((data) => console.log(data.GetData()));
 
 class App extends Component {
