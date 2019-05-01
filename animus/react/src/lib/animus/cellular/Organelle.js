@@ -51,9 +51,9 @@ class Organelle extends Subscribable {
         return this.Metabolize(payload);
     }
 
-    static Conform(type, enzyme, cell, args) {
+    static Conform(flag, enzyme, cell, args) {
         return {
-            type,
+            flag,
             enzyme,
             cell,
             args
