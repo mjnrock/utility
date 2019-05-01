@@ -9,6 +9,8 @@ import OmegaEnzyme from "./OmegaEnzyme";
 import BetaEnzyme from "./BetaEnzyme";
 import GammaEnzyme from "./GammaEnzyme";
 
+import ZetaEnzyme from "./ZetaEnzyme";
+
 export default {
     Metabolite,
     Organelle,
@@ -18,5 +20,7 @@ export default {
     
     OmegaEnzyme,
     BetaEnzyme,
-    GammaEnzyme
+    GammaEnzyme,
+
+    ZetaEnzyme
 }

@@ -12,6 +12,17 @@ class Enzyme {
         });
     }
 
+    Recycle() {
+        this._status = true;
+
+        return this;
+    }
+    Purge() {
+        this._status = false;
+
+        return this;
+    }
+
     GetType() {
         return this.State.type;
     }
@@ -51,7 +62,7 @@ class Enzyme {
         if(this._status === true && typeof hook === "function") {
             let ret = hook();
 
-            this._status = false;
+            this.Purge();
 
             return ret !== void 0 ? ret : cell;
         }
@@ -80,16 +91,12 @@ class Enzyme {
     // }
 }
 
-// Enzyme.EnumType = Object.freeze({
-//     OMEGA: NewUUID(),   // GET - Cell Behavior
-//     BETA: NewUUID(),   // SET - Cell Behavior
-//     GAMMA: NewUUID(),   // INVOKE - Cell Behavior
-// });
-
 Enzyme.EnumType = Object.freeze({
     OMEGA: "OMEGA",   // GET - Cell Behavior
     BETA: "BETA",   // SET - Cell Behavior
     GAMMA: "GAMMA",   // INVOKE - Cell Behavior
+
+    ZETA: "ZETA",   // INVOKE - Organelle
 });
 
 export default Enzyme;

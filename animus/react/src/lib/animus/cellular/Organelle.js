@@ -4,14 +4,14 @@ import Metabolite from "./Metabolite";
 //! Enzymes sort of make this useless.  Find alternative use and code; there is value somewhere in a sequencer.
 
 class Organelle extends Subscribable {
-    constructor(type, ...callbacks) {
+    constructor(processType, ...callbacks) {
         super();
 
-        if(typeof type === "function") {
+        if(typeof processType === "function") {
             this.Type = Organelle.EnumProcessType.FLOW;
-            this.Sequence = [ type, ...callbacks ];
+            this.Sequence = [ processType, ...callbacks ];
         } else {
-            this.Type = type || Organelle.EnumProcessType.FLOW;
+            this.Type = processType || Organelle.EnumProcessType.FLOW;
             this.Sequence = callbacks;
         }
     }
@@ -48,7 +48,16 @@ class Organelle extends Subscribable {
     }
 
     next(payload) {
-        this.Metabolize(payload);
+        return this.Metabolize(payload);
+    }
+
+    static Conform(type, enzyme, cell, args) {
+        return {
+            type,
+            enzyme,
+            cell,
+            args
+        };
     }
 }
 

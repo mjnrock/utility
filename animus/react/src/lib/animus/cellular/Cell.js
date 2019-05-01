@@ -5,9 +5,10 @@ import Cellular from "./package";
 import Subscribable from "./../Subscribable";
 
 class Cell extends Subscribable {
-    constructor(state = {}) {
+    constructor(state = {}, organelles = []) {
         super(state);
 
+        this._organelles = Object.freeze(organelles);
         this._actions = {};
         this.ƒ = (() => new Proxy(this, {        // ALT+159 = ƒ
             get: function(cell, prop) {
@@ -39,6 +40,22 @@ class Cell extends Subscribable {
                 }
             }
         }))();
+    }
+
+    Endogenize(...organelles) {
+        let arr = [
+            ...this._organelles
+        ];
+
+        for(let i in organelles) {
+            let organelle = organelles[i];
+
+            arr.push(organelle);
+        }
+
+        this._organelles = Object.freeze(arr);
+
+        return this;
     }
 
     Learn(key, fn, ...defaultArgs) {

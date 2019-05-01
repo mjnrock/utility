@@ -2,7 +2,7 @@ import Subscribable from "./../Subscribable";
 import Beacon from "./Beacon";
 
 class Oracle extends Subscribable {
-    constructor(state = {}, organelles = {}) {
+    constructor(state = {}, organelles = []) {
         super(state);
 
         this._beacon = new Beacon();
@@ -11,7 +11,7 @@ class Oracle extends Subscribable {
         this._organelles = Object.freeze(organelles);
     }
 
-    
+
 }
 
 export default Oracle;
