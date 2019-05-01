@@ -96,16 +96,11 @@ class Subscribable {
     }
 }
 
-// Subscribable.EnumEventType = Object.freeze({
-// 	UPDATE: NewUUID(),
-//     SUBSCRIBE: NewUUID(),
-//     UNSUBSCRIBE: NewUUID()
-// });
-
 Subscribable.EnumEventType = Object.freeze({
-	UPDATE: "UPDATE",
-    SUBSCRIBE: "SUBSCRIBE",
-    UNSUBSCRIBE: "UNSUBSCRIBE"
+    UPDATE: "state-update",
+    
+    SUBSCRIBE: "subscription-add",
+    UNSUBSCRIBE: "subscription-remove"
 });
 
 export default Subscribable;

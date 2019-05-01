@@ -6,7 +6,7 @@ let beacon = new Animus.Hive.Beacon(),
 
 beacon.SubscribeTo(cell, cell2);
 
-let beta = new Animus.Cellular.BetaMetabolite("add", (cell, a, b) => {
+let beta = new Animus.Cellular.BetaEnzyme("add", (cell, a, b) => {
     return a + b;
 });
 cell.Metabolize(beta);

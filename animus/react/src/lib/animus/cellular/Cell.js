@@ -74,46 +74,40 @@ class Cell extends Subscribable {
         return this._actions[key].callback(this, ...this._actions[key].args);            
 	}
 
-    Metabolize(...metabolites) {
-        this.Invoke(Cell.EnumEventType.BEGIN, metabolites);
+    Metabolize(...enzymes) {
+        this.Invoke(Cell.EnumEventType.BEGIN, enzymes);
         
         let output = [];
-        for(let i in metabolites) {
-            let metabolite = metabolites[i];
+        for(let i in enzymes) {
+            let enzyme = enzymes[i];
             
-            if(metabolite instanceof Cellular.Metabolite && metabolite._status === true) {                
-                let result = metabolite.Activate(this);
+            if(enzyme instanceof Cellular.Enzyme && enzyme._status === true) {                
+                let result = enzyme.Activate(this);
 
-                output.push([ metabolite.State.type, result ]);
+                output.push([ enzyme.State.type, result ]);
 
                 this.Invoke(Cell.EnumEventType.PROCESS, {
-                    metabolite,
+                    enzyme,
                     result
                 });
             }
         }
 
         this.Invoke(Cell.EnumEventType.END, {
-            metabolites,
+            enzymes,
             output
         });
 
-        return metabolites;
+        return enzymes;
     }
 }
 
-// Cell.EnumEventType = Object.freeze({
-//     ACTION: NewUUID(),
-//     BEGIN: NewUUID(),
-//     PROCESS: NewUUID(),
-//     END: NewUUID()
-// });
-
 Cell.EnumEventType = Object.freeze({
-    ACTION: "ACTION",
-    BEGIN: "BEGIN",
-    PROCESS: "PROCESS",
-    END: "END"
+    ACTION: "invocation-action",
+
+    BEGIN: "metabolism-begin",
+    PROCESS: "metabolism-process",
+    END: "metabolism-end"
 });
 
 export default Cell;

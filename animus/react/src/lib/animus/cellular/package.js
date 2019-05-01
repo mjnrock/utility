@@ -1,19 +1,22 @@
+
+import Metabolite from "./Metabolite";
 import Organelle from "./Organelle";
 import Cell from "./Cell";
 
-import Metabolite from "./Metabolite";
+import Enzyme from "./Enzyme";
 
-import OmegaMetabolite from "./OmegaMetabolite";
-import BetaMetabolite from "./BetaMetabolite";
-import GammaMetabolite from "./GammaMetabolite";
+import OmegaEnzyme from "./OmegaEnzyme";
+import BetaEnzyme from "./BetaEnzyme";
+import GammaEnzyme from "./GammaEnzyme";
 
 export default {
+    Metabolite,
     Organelle,
     Cell,
 
-    Metabolite,
+    Enzyme,
     
-    OmegaMetabolite,
-    BetaMetabolite,
-    GammaMetabolite
+    OmegaEnzyme,
+    BetaEnzyme,
+    GammaEnzyme
 }

@@ -6,7 +6,7 @@ let c = new Animus.Cellular.Cell();
 //     next: (payload) => console.log(payload)
 // });
 
-let beta1 = new Animus.Cellular.BetaMetabolite("print", (cell, payload) => {
+let beta1 = new Animus.Cellular.BetaEnzyme("print", (cell, payload) => {
     console.log("-------------");
     console.log(cell);
     console.log(payload);
@@ -14,13 +14,13 @@ let beta1 = new Animus.Cellular.BetaMetabolite("print", (cell, payload) => {
 
     return payload;
 }, 8, 16, 32);
-let beta2 = new Animus.Cellular.BetaMetabolite("add", (cell, a, b) => {
+let beta2 = new Animus.Cellular.BetaEnzyme("add", (cell, a, b) => {
     return a + b;
 });
-let gamma1 = new Animus.Cellular.GammaMetabolite("print", {
+let gamma1 = new Animus.Cellular.GammaEnzyme("print", {
     cat: "Kiszka"
 });
-let gamma2 = new Animus.Cellular.GammaMetabolite("add", 5, 7);
+let gamma2 = new Animus.Cellular.GammaEnzyme("add", 5, 7);
 
 c.Metabolize(beta1, beta2);
 let a = c.Metabolize(gamma1, gamma2);

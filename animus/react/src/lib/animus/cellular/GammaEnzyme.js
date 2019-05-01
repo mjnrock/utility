@@ -1,8 +1,8 @@
-import Metabolite from "./Metabolite";
+import Enzyme from "./Enzyme";
 
-class GammaMetabolite extends Metabolite {
+class GammaEnzyme extends Enzyme {
     constructor(key, ...args) {
-        super(Metabolite.EnumType.GAMMA, key, args);
+        super(Enzyme.EnumType.GAMMA, key, args);
     }
 
     Activate(cell) {
@@ -14,4 +14,4 @@ class GammaMetabolite extends Metabolite {
     }
 }
 
-export default GammaMetabolite;
+export default GammaEnzyme;

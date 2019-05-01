@@ -1,8 +1,8 @@
-import Metabolite from "./Metabolite";
+import Enzyme from "./Enzyme";
 
-class BetaMetabolite extends Metabolite {
+class BetaEnzyme extends Enzyme {
     constructor(key, fn, ...defaultArgs) {
-        super(Metabolite.EnumType.BETA, key, {
+        super(Enzyme.EnumType.BETA, key, {
             callback: fn,
             args: defaultArgs
         });
@@ -17,4 +17,4 @@ class BetaMetabolite extends Metabolite {
     }
 }
 
-export default BetaMetabolite;
+export default BetaEnzyme;
