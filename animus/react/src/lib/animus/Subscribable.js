@@ -1,6 +1,8 @@
 import { Subject } from "rxjs";
 import { NewUUID } from "./utility/Helper";
 
+import Quanta from "./quanta/package";
+
 class Subscribable {
     constructor(state = {}) {
         this._id = NewUUID();
@@ -8,7 +10,8 @@ class Subscribable {
 		this._subscriptions = {};
 		this._origin = Date.now();
 
-		this.State = Object.freeze(state);		
+		// this.State = Object.freeze(state);
+		this.State = new Quanta.QObject(state);
     }
 
 	GetState() {
@@ -20,7 +23,8 @@ class Subscribable {
 			state: Object.freeze(state)
 		});
 
-		this.State = Object.freeze(state);
+		// this.State = Object.freeze(state);
+		this.State = new Quanta.QObject(state);
 
 		return this;
 	}
