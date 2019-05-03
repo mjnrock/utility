@@ -8,7 +8,7 @@ import React, { Component } from "react";
 import Animus from "./lib/animus/package";
 
 let q = new Animus.Quanta.QString();
-q.FetchData("http://localhost:3087/validate").then((data) => console.log(data.GetData()));
+q.FetchValue("http://localhost:3087/validate").then((value) => console.log(value.GetValue()));
 
 class App extends Component {
     render() {
