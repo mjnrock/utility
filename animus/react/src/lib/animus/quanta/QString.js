@@ -1,19 +1,19 @@
 import Quantum from "./Quantum";
 
 class QString extends Quantum {
-    constructor(data, key = null) {
-        super(Quantum.EnumType.STRING, data, { key });
+    constructor(value, key = null) {
+        super(Quantum.EnumType.STRING, value, { key });
     }
 
     static Test(value) {
         return typeof value === "string" || value instanceof String;
     }
 
-    SetData(value) {
+    SetValue(value) {
         if(QString.Test(value)) {
-            super.SetData.call(this, value);
+            super.SetValue.call(this, value);
         } else {
-            super.SetData.call(this, JSON.stringify(value));
+            super.SetValue.call(this, JSON.stringify(value));
         }
 
         return this;

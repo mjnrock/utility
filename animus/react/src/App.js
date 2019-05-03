@@ -13,7 +13,7 @@ q.FetchData("http://localhost:3087/validate").then((data) => console.log(data.Ge
 class App extends Component {
     render() {
         return (
-            <div>;</div>
+            <div>Animus! ^_^</div>
         );
     }
 }

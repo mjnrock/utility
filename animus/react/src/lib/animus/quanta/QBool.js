@@ -1,17 +1,17 @@
 import Quantum from "./Quantum";
 
 class QBool extends Quantum {
-    constructor(data, key = null) {
-        super(Quantum.EnumType.BOOLEAN, data, { key });
+    constructor(value, key = null) {
+        super(Quantum.EnumType.BOOLEAN, value, { key });
     }
 
     static Test(value) {
         return typeof value === "boolean";
     }
 
-    SetData(value) {
+    SetValue(value) {
         if(!!value) {
-            super.SetData.call(this, !!value);
+            super.SetValue.call(this, !!value);
         }
 
         return this;

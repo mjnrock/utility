@@ -1,17 +1,17 @@
 import Quantum from "./Quantum";
 
 class QArray extends Quantum {
-    constructor(data, key = null) {
-        super(Quantum.EnumType.ARRAY, data, { key });
+    constructor(value, key = null) {
+        super(Quantum.EnumType.ARRAY, value, { key });
     }
 
     static Test(value) {
         return Array.isArray(value);
     }
 
-    SetData(value) {
+    SetValue(value) {
         if(QArray.Test(value)) {
-            super.SetData.call(this, value);
+            super.SetValue.call(this, value);
         }
 
         return this;

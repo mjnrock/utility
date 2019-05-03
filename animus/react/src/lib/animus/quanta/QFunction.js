@@ -1,17 +1,17 @@
 import Quantum from "./Quantum";
 
 class QFunction extends Quantum {
-    constructor(data, key = null) {
-        super(Quantum.EnumType.FUNCTION, data, { key });
+    constructor(value, key = null) {
+        super(Quantum.EnumType.FUNCTION, value, { key });
     }
 
     static Test(value) {
         return typeof value === "function";
     }
 
-    SetData(value) {
+    SetValue(value) {
         if(QFunction.Test(value)) {
-            super.SetData.call(this, value);
+            super.SetValue.call(this, value);
         }
 
         return this;

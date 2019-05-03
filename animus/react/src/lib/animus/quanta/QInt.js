@@ -1,17 +1,17 @@
 import Quantum from "./Quantum";
 
 class QInt extends Quantum {
-    constructor(data, key = null) {
-        super(Quantum.EnumType.INTEGER, data, { key });
+    constructor(value, key = null) {
+        super(Quantum.EnumType.INTEGER, value, { key });
     }
 
     static Test(value) {
         return (!isNaN(parseFloat(value)) && isFinite(value)) || typeof value === "number";
     }
 
-    SetData(value) {
+    SetValue(value) {
         if(QInt.Test(value)) {
-            super.SetData.call(this, value);
+            super.SetValue.call(this, value);
         }
 
         return this;

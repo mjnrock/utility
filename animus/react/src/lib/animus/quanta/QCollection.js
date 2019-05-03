@@ -2,8 +2,8 @@ import Quantum from "./Quantum";
 import QInt from "./QInt";
 
 class QCollection extends Quantum {
-    constructor(data, key = null) {
-        super(Quantum.EnumType.COLLECTION, data, { key });
+    constructor(value, key = null) {
+        super(Quantum.EnumType.COLLECTION, value, { key });
     }
 
     static Test(value) {

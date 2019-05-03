@@ -1,15 +1,20 @@
 import { NewUUID } from "./../utility/Helper";
 
 class Quantum {
-    constructor(type, data, { key = null, uuid = NewUUID(), timestamp = Date.now() } = {}) {
+    constructor(type, value, { key = null, uuid = NewUUID(), timestamp = Date.now(), ordinality = null } = {}) {
         this._type = type;
-        this._data = data;
+        this._value = value;
         this._meta = {
             _id: uuid,
             _key: key,
-            _origin: timestamp
+            _origin: timestamp,
+            _ordinality: ordinality
         };
     }
+
+	GetSchema(id = 1, pid = 0, depth = "") {
+		return `${ depth }${ id }.${ pid }.${this.Type}`;
+	}
 
     GetType() {
         return this._type;
@@ -20,15 +25,15 @@ class Quantum {
         return this;
     }
 
-    GetData() {
-        return this._data;
+    GetValue() {
+        return this._value;
     }
-    SetData(data) {
-        this._data = data;
+    SetValue(value) {
+        this._value = value;
 
         return this;
     }
-    async FetchData(url) {
+    async FetchValue(url) {
         return await fetch(url)
             .then((resp) => resp.json())
             .then((data) => {
@@ -36,7 +41,7 @@ class Quantum {
                     data = JSON.parse(data);
                 }
 
-                this.SetData(data);
+                this.SetValue(data);
 
                 return this;
             })
@@ -79,6 +84,15 @@ class Quantum {
         return this;
     }
 
+    GetOrdinality() {
+        return this._meta._ordinality;
+    }
+    SetOrdinality(ordinality) {
+        this._meta._ordinality = ordinality;
+
+        return this;
+    }
+
     Serialize() {
         return JSON.stringify(this);
     }
@@ -86,10 +100,11 @@ class Quantum {
         let q = Quantum.Deserialize(json);
 
         this.SetType(q.GetType());
-        this.SetData(q.GetData());
+        this.SetValue(q.GetValue());
         this.SetID(q.GetID());
         this.SetKey(q.GetKey());
         this.SetOrigin(q.GetOrigin());
+        this.SetOrdinality(q.GetOrdinality());
     }
 
     static Deserialize(json) {
@@ -99,7 +114,7 @@ class Quantum {
 
         let q = new Quantum(
             json._type,
-            json._data,
+            json._value,
             ...json._meta
         );
 

@@ -2,20 +2,20 @@ import Quantum from "./Quantum";
 import QString from "./QString";
 
 class QObject extends Quantum {
-    constructor(data, key = null) {
-        super(Quantum.EnumType.OBJECT, data, { key });
+    constructor(value, key = null) {
+        super(Quantum.EnumType.OBJECT, value, { key });
     }
 
     static Test(value) {
         return typeof value === "object";
     }
 
-    SetData(value) {
+    SetValue(value) {
         if(QObject.Test(value)) {
-            super.SetData.call(this, value);
+            super.SetValue.call(this, value);
         } else if(QString.Test(value)) {
             try {
-                super.SetData.call(this, JSON.parse(value));
+                super.SetValue.call(this, JSON.parse(value));
             } catch(e) {
                 console.warn(e);
             }

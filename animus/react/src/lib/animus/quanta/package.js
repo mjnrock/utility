@@ -1,3 +1,6 @@
+//? AQT - Animus Quantum Tags "Act"
+//? AQQL - Animus Quantum Query Language "Awk-wool"
+
 import Quantum from "./Quantum";
 import QBool from "./QBool";
 import QInt from "./QInt";
