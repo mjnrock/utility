@@ -1,8 +1,16 @@
 import Quantum from "./Quantum";
 
 class QFunction extends Quantum {
-    constructor(value, key = null) {
-        super(Quantum.EnumType.FUNCTION, value, { key });
+    constructor(key, value) {
+        if(arguments.length === 1) {
+            super(Quantum.EnumType.FUNCTION, { value: key });
+            
+            this.SetValue(key);
+        } else {
+            super(Quantum.EnumType.FUNCTION, { value,  key });
+
+            this.SetValue(value);
+        }
     }
 
     static Test(value) {

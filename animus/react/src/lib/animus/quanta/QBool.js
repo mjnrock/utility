@@ -1,8 +1,16 @@
 import Quantum from "./Quantum";
 
 class QBool extends Quantum {
-    constructor(value, key = null) {
-        super(Quantum.EnumType.BOOLEAN, value, { key });
+    constructor(key, value) {
+        if(arguments.length === 1) {
+            super(Quantum.EnumType.BOOLEAN, { value: key });
+            
+            this.SetValue(key);
+        } else {
+            super(Quantum.EnumType.BOOLEAN, { value,  key });
+
+            this.SetValue(value);
+        }
     }
 
     static Test(value) {

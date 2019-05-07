@@ -1,3 +1,5 @@
+import Quanta from "./../quanta/package";
+
 class Transformer {
 	static GenerateUUID() {
 		let d = new Date().getTime();
@@ -27,15 +29,15 @@ class Transformer {
 			array = [];
 		}
 
-		// if (tag instanceof Tag.TagCompound || tag instanceof Tag.TagList) {
-		// 	array.push(tag);
-		// 	let tags = tag.Value;
-		// 	for (let i in tags) {
-		// 		Transformer.FlattenTagStructure(tags[i], array);
-		// 	}
-		// } else if (tag instanceof Tag.ATag) {
-		// 	array.push(tag);
-		// }
+		if (tag instanceof Quanta.QCollection) {
+			array.push(tag);
+			let tags = tag.Value;
+			for (let i in tags) {
+				Transformer.FlattenTagStructure(tags[i], array);
+			}
+		} else if (tag instanceof Quanta.Quantum) {
+			array.push(tag);
+		}
 
 		return array;
 	}

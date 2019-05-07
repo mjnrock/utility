@@ -7,9 +7,6 @@ import React, { Component } from "react";
 // eslint-disable-next-line
 import Animus from "./lib/animus/package";
 
-let q = new Animus.Quanta.QObject();
-q.FetchValue("http://localhost:3087/validate").then((value) => console.log(value.GetValue()));
-
 class App extends Component {
     render() {
         return (

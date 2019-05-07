@@ -2,8 +2,16 @@ import Quantum from "./Quantum";
 import QString from "./QString";
 
 class QObject extends Quantum {
-    constructor(value, key = null) {
-        super(Quantum.EnumType.OBJECT, value, { key });
+    constructor(key, value) {
+        if(arguments.length === 1) {
+            super(Quantum.EnumType.OBJECT, { value: key });
+            
+            this.SetValue(key);
+        } else {
+            super(Quantum.EnumType.OBJECT, { value,  key });
+
+            this.SetValue(value);
+        }
     }
 
     static Test(value) {

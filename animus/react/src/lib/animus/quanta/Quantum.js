@@ -1,7 +1,7 @@
 import { NewUUID } from "./../utility/Helper";
 
 class Quantum {
-    constructor(type, value, { key = null, uuid = NewUUID(), timestamp = Date.now(), ordinality = null } = {}) {
+    constructor(type, { value = void 0,  key = null, uuid = NewUUID(), timestamp = Date.now(), ordinality = null } = {}) {
         this._type = type;
         this._value = value;
         this._meta = {

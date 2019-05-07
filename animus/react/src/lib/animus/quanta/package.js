@@ -3,7 +3,7 @@
 
 import Quantum from "./Quantum";
 import QBool from "./QBool";
-import QInt from "./QInt";
+import QNumeric from "./QNumeric";
 import QString from "./QString";
 import QArray from "./QArray";
 import QObject from "./QObject";
@@ -14,7 +14,7 @@ export default {
     Quantum,
 
     QBool,
-    QInt,
+    QNumeric,
     QString,    
     QArray,
     QObject,
