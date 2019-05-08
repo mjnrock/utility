@@ -1,3 +1,5 @@
+import Helper from "./Helper";
+
 class Color {
     constructor(r = 255, g = 255, b = 255, a = 1.0) {
         if(arguments.length === 1) {
@@ -195,7 +197,7 @@ class Color {
 
         return `hsv(${ h }, ${ s }, ${ v })`;
     }
-    PrintLabel() {
+    PrintLabel(fuzzyLookup = false, fudge = 0.01) {
         let colors = Object.entries(Color.Labels);
 
         try {
@@ -205,6 +207,17 @@ class Color {
                 
                     if(this.R() === r && this.G() === g && this.B() === b) {
                         return c[0];
+                    }
+
+                    fudge = Math.floor(Helper.Clamp(fudge, 0, 1) * 255);
+                    if(fuzzyLookup) {                
+                        if(
+                            (this.R() >= r - fudge && this.R() <= r + fudge)
+                            && (this.G() >= g - fudge && this.G() <= g + fudge)
+                            && (this.B() >= b - fudge && this.B() <= b + fudge)
+                        ) {
+                            return c[0];
+                        }
                     }
             }
         } catch(e) {
