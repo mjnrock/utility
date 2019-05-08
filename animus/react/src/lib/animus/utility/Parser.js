@@ -1,7 +1,7 @@
 import Animus from "./../package";
 
 class Parser {
-    static Query(query, tag) {
+    static Query(tag, query) {
         //TODO
     }
 
