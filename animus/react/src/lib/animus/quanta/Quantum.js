@@ -57,10 +57,10 @@ class Quantum {
         return this;
     }
 
-    GetID() {
+    GetId() {
         return this._meta._id;
     }
-    SetID(id) {
+    SetId(id) {
         this._meta._id = id;
 
         return this;
@@ -101,7 +101,7 @@ class Quantum {
 
         this.SetType(q.GetType());
         this.SetValue(q.GetValue());
-        this.SetID(q.GetID());
+        this.SetId(q.GetId());
         this.SetKey(q.GetKey());
         this.SetOrigin(q.GetOrigin());
         this.SetOrdinality(q.GetOrdinality());
@@ -134,11 +134,36 @@ Quantum.EnumType = Object.freeze({
 
 Quantum.EnumAttributeType = Object.freeze({
     TYPE: 1,
-    DATA: 2,
+    VALUE: 2,
     META: 3,
     ID: 4,
     KEY: 5,
-    ORIGIN: 6
+    ORIGIN: 6,
+    ORDINALITY: 7
 });
+
+Quantum.ReverseEnum = (_enum, value) => {
+    _enum = _enum.replace(/enum/gi, "");
+    
+    if(_enum.toLowerCase() === "type") {
+        let iter = Object.entries(Quantum.EnumType);
+
+        for(let i in iter) {
+            if(value === iter[i][1]) {
+                return iter[i][0];
+            }
+        }
+    } else if(_enum.toLowerCase() === "attributetype") {
+        let iter = Object.entries(Quantum.EnumAttributeType);
+
+        for(let i in iter) {
+            if(value === iter[i][1]) {
+                return iter[i][0];
+            }
+        }
+    }
+
+    return false;
+}
 
 export default Quantum;

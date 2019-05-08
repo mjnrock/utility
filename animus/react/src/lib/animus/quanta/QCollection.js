@@ -33,7 +33,7 @@ class QCollection extends Quantum {
     Add(...quanta) {
         quanta.forEach((quantum, i) => {
             if(quantum instanceof Quantum) {
-                this._value[ quantum.GetID() ] = quantum;
+                this._value[ quantum.GetId() ] = quantum;
             }
         });
 
@@ -42,7 +42,7 @@ class QCollection extends Quantum {
     Remove(...quanta) {
         quanta.forEach((quantum, i) => {
             if(quantum instanceof Quantum) {
-                delete this._value[ quantum.GetID() ];
+                delete this._value[ quantum.GetId() ];
             } else if(QString.Test(quantum)) {
                 if(quantum.match(/\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b/gi)) {
                     delete this._value[ quantum ];
@@ -54,21 +54,16 @@ class QCollection extends Quantum {
     }
     Find(value, searchType = Quantum.EnumAttributeType.KEY) {
         for(let i in this._value) {
-            let tag = this._value[i];
+            try {
+                let tag = this._value[i],
+                    key = Quantum.ReverseEnum("AttributeType", searchType).toLowerCase();
+                    key = key.charAt(0).toUpperCase() + key.slice(1);   // Evaluates to "Key, "Id", "Data", "Meta", etc.
 
-            switch(searchType) {
-                case Quantum.EnumAttributeType.KEY:
-                    if(tag.GetKey() === value) {
-                        return tag;
-                    }
-                    break;
-                case Quantum.EnumAttributeType.ID:
-                    if(tag.GetID() === value) {
-                        return tag;
-                    }
-                    break;
-                default:
-                    break;
+                if(tag[ `Get${ key }` ]() === value) {
+                    return tag;
+                }
+            } catch(e) {
+                console.warn(`[Operation Aborted]: Invalid @searchType(${ searchType })`);
             }
         }
         

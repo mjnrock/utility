@@ -17,5 +17,5 @@ t.Remove(c);
 console.log(t);
 console.log(t.Has(t0.GetKey()));
 console.log(t.Has(t0.GetKey(), Animus.Quanta.Quantum.EnumAttributeType.KEY));
-console.log(t.Has(t0.GetID(), Animus.Quanta.Quantum.EnumAttributeType.ID));
+console.log(t.Has(t0.GetId(), Animus.Quanta.Quantum.EnumAttributeType.ID));
 console.log(t.Has("fish"));
