@@ -15,32 +15,6 @@ class Color {
         }
     }
 
-    ToggleHex() {
-        this._type = Color.EnumType.HEX;
-
-        return this;
-    }
-    ToggleRGB() {
-        this._type = Color.EnumType.RGB;
-
-        return this;
-    }
-    ToggleRGBA() {
-        this._type = Color.EnumType.RGBA;
-
-        return this;
-    }
-    ToggleHSL() {
-        this._type = Color.EnumType.HSL;
-
-        return this;
-    }
-    ToggleHSV() {
-        this._type = Color.EnumType.HSV;
-
-        return this;
-    }
-
     Get() {
         switch(this._type) {
             case Color.EnumType.HEX:
@@ -91,6 +65,59 @@ class Color {
             Color.RGBComponent2Hex(this.G()),
             Color.RGBComponent2Hex(this.B())
         ];
+    }
+
+    Set(r = 255, g = 255, b = 255, a = 1.0) {        
+        this._value = {
+            r: r,
+            g: g,
+            b: b,
+            a: a
+        };
+
+        return this;
+    }
+    SetHex(hex) {
+        let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+
+        if(result) {
+            this.Set(
+                parseInt(result[1], 16),
+                parseInt(result[2], 16),
+                parseInt(result[3], 16),
+                1.0
+            );
+
+            return this;
+        }
+
+        return false;
+    }
+
+    ToggleHex() {
+        this._type = Color.EnumType.HEX;
+
+        return this;
+    }
+    ToggleRGB() {
+        this._type = Color.EnumType.RGB;
+
+        return this;
+    }
+    ToggleRGBA() {
+        this._type = Color.EnumType.RGBA;
+
+        return this;
+    }
+    ToggleHSL() {
+        this._type = Color.EnumType.HSL;
+
+        return this;
+    }
+    ToggleHSV() {
+        this._type = Color.EnumType.HSV;
+
+        return this;
     }
 
     PrintHex() {
@@ -183,33 +210,6 @@ class Color {
         } catch(e) {
             console.warn("[Operation Aborted]: Not a named color");
         }
-    }
-
-    Set(r = 255, g = 255, b = 255, a = 1.0) {        
-        this._value = {
-            r: r,
-            g: g,
-            b: b,
-            a: a
-        };
-
-        return this;
-    }
-    SetHex(hex) {
-        let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-
-        if(result) {
-            this.SetRGBA(
-                parseInt(result[1], 16),
-                parseInt(result[2], 16),
-                parseInt(result[3], 16),
-                1.0
-            );
-
-            return this;
-        }
-
-        return false;
     }
 
     static RGB2Hex(r, g, b) {
