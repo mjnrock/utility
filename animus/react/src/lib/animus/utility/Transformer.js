@@ -22,11 +22,7 @@ class Transformer {
 	 * 
 	 * @returns [Tag, ...N]
 	 */
-	static FlattenTagStructure(tag, array) {
-		if (array === null || array === void 0) {
-			array = [];
-		}
-
+	static FlattenTagStructure(tag, array = []) {
 		if (tag instanceof Quanta.QCollection) {
 			array.push(tag);
 			let tags = tag.GetValue();
@@ -48,14 +44,7 @@ class Transformer {
 	 * 
 	 * @returns [{ID, ParentID, Tag}, ...N]
 	 */
-	static ToHierarchy(tag, array, parentID) {
-		if (array === null || array === void 0) {
-			array = [];
-		}
-		if (parentID === void 0) {
-			parentID = null;
-		}
-
+	static ToHierarchy(tag, array = [], parentID = null) {
 		let ID = array.length + 1;
 		array.push({
 			ID: ID,
@@ -79,11 +68,7 @@ class Transformer {
 	 * 
 	 * @returns AQT..Quantum
 	 */
-	static FromHierarchy(array) {
-		if (array === null || array === void 0) {
-			array = [];
-		}
-
+	static FromHierarchy(array = []) {
 		if (
 			array.length > 0 &&
 			(array[0] && array[0].Tag instanceof Quanta.Quantum)
@@ -108,14 +93,7 @@ class Transformer {
 		return array;
 	}
 
-	static ToSchema(tag, array, parentID, parent) {
-		if (array === null || array === void 0) {
-			array = [];
-		}
-		if (parentID === void 0) {
-			parentID = null;
-		}
-
+	static ToSchema(tag, array = [], parentID = null, parent) {
 		let ID = array.length + 1;
 		array.push({
 			ID: ID,
