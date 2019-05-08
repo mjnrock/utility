@@ -15,11 +15,9 @@ class Transformer {
 		return uuid.toUpperCase();
     }
 
-    //TODO Change from PTO to AQT structure
-    //? Comments within are only to compile in "npm start"; they should be uncommented before refactoring
     /**
-	 * This will convert a TagCompound into an 1-D Array ("flattened") of every Descendant
-	 * @param PTO..TagCompound | @tag 
+	 * This will convert a AQT..Quantum into an 1-D Array ("flattened") of every Descendant, maintaining _value references
+	 * @param AQT..Quantum | @tag 
 	 * @param ? Array | @array | Used for recursion
 	 * 
 	 * @returns [Tag, ...N]
@@ -31,7 +29,7 @@ class Transformer {
 
 		if (tag instanceof Quanta.QCollection) {
 			array.push(tag);
-			let tags = tag.Value;
+			let tags = tag.GetValue();
 			for (let i in tags) {
 				Transformer.FlattenTagStructure(tags[i], array);
 			}
@@ -42,11 +40,9 @@ class Transformer {
 		return array;
 	}
 
-    //TODO Change from PTO to AQT structure
-    //? Comments within are only to compile in "npm start"; they should be uncommented before refactoring
 	/**
 	 * This will create a flattened, RDMS-like Hierarchy array where each constituent Tag is wrapped with an "ID" and a "ParentID"
-	 * @param PTO..TagCompound | @tag 
+	 * @param AQT..Quantum | @tag
 	 * @param ? Array | @array | Used for recursion
 	 * @param ? INT | @parentID | Used for recursion
 	 * 
@@ -67,56 +63,51 @@ class Transformer {
 			Tag: tag
 		});
 
-		// if (tag instanceof Tag.TagCompound || tag instanceof Tag.TagList) {
-		// 	for (let i in tag.Value) {
-		// 		array = Transformer.ToHierarchy(tag.Value[i], array, ID);
-		// 	}
-		// }
+		if (tag instanceof Quanta.QCollection) {
+			for(let i in tag.GetValue()) {
+                let val = tag.GetValue()[i];
+				array = Transformer.ToHierarchy(val, array, ID);
+			}
+		}
 
 		return array;
     }
     
-    //TODO Change from PTO to AQT structure
-    //? Comments within are only to compile in "npm start"; they should be uncommented before refactoring
 	/**
-	 * This will reconstitute a TagCompound from a TagCompound previously Tx:Hierarchy
-	 * @param this.ToHierarchy Output | @array
+	 * This will reconstitute a AQT..Quantum from a AQT..Quantum previously Tx:Hierarchy
+	 * @param Transformer.ToHierarchy Output | @array
 	 * 
-	 * @returns TagCompound
+	 * @returns AQT..Quantum
 	 */
 	static FromHierarchy(array) {
 		if (array === null || array === void 0) {
 			array = [];
 		}
 
-		// if (
-		// 	array.length > 0 &&
-		// 	(array[0] && array[0].Tag instanceof Tag.ATag)
-		// ) {
-		// 	let arr = {},
-		// 		minID = array[0].ID;
-		// 	for (let i in array) {
-		// 		let ID = array[i].ID,
-		// 			parentID = array[i].ParentID,
-		// 			tag = array[i].Tag;
+		if (
+			array.length > 0 &&
+			(array[0] && array[0].Tag instanceof Quanta.Quantum)
+		) {
+			let arr = {},
+				minID = array[0].ID;
+			for (let i in array) {
+				let ID = array[i].ID,
+					parentID = array[i].ParentID,
+					tag = array[i].Tag;
 
-		// 		minID = ID < minID ? ID : minID;
-		// 		arr[ID] = tag;
-		// 		if (arr[parentID] instanceof Tag.TagCompound) {
-		// 			arr[parentID].AddTag(arr[ID]);
-		// 		} else if (arr[parentID] instanceof Tag.TagList) {
-		// 			arr[parentID].AddValue(arr[ID]);
-		// 		}
-		// 	}
+				minID = ID < minID ? ID : minID;
+				arr[ID] = tag;
+				if (arr[parentID] instanceof Quanta.QCollection) {
+					arr[parentID].Add(arr[ID]);
+				}
+			}
 
-		// 	return arr[minID];
-		// }
+			return arr[minID];
+		}
 
 		return array;
 	}
 
-    //TODO Change from PTO to AQT structure
-    //? Comments within are only to compile in "npm start"; they should be uncommented before refactoring
 	static ToSchema(tag, array, parentID, parent) {
 		if (array === null || array === void 0) {
 			array = [];
@@ -130,17 +121,19 @@ class Transformer {
 			ID: ID,
 			ParentID: parentID,
 			Key: tag.GetKey(),
-			Path: `${ parent !== null && parent !== void 0 ? `${ parent.Path }.` : "" }${ tag.GetKey() }`,
+			KeyPath: `${ parent !== null && parent !== void 0 ? `${ parent.KeyPath }.` : "" }${ tag.GetKey() }`,
+			IDPath: `${ parent !== null && parent !== void 0 ? `${ parent.IDPath }.` : "" }${ tag.GetId() }`,
 			Ordinality: tag.GetOrdinality(),
 			Tag: tag
 		});
 
-		// if (tag instanceof Tag.TagCompound || tag instanceof Tag.TagList) {
-		// 	let lastEntry = array[array.length - 1];
-		// 	for (let i in tag.Value) {
-		// 		array = Transformer.ToSchema(tag.Value[i], array, ID, lastEntry);
-		// 	}
-		// }
+		if (tag instanceof Quanta.QCollection) {
+			let lastEntry = array[ array.length - 1 ];
+			for (let i in tag.GetValue()) {
+                let val = tag.GetValue()[i];
+				array = Transformer.ToSchema(val, array, ID, lastEntry);
+			}
+		}
 
 		return array;
 	}
