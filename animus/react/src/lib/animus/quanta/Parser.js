@@ -1,4 +1,4 @@
-import Animus from "./../package";
+import Animus from "../package";
 
 class Parser {
     static Query(tag, query) {

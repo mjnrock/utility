@@ -72,6 +72,9 @@ class QCollection extends Quantum {
     Has(value, searchType = Quantum.EnumAttributeType.KEY) {
         return this.Find(value, searchType) instanceof Quantum ? true : false;
     }
+    Size() {
+        return Object.keys(this._value).length;
+    }
 
     Deserialize(json) {
         super.Deserialize.call(this, json);

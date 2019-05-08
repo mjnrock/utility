@@ -7,15 +7,20 @@ import React, { Component } from "react";
 // eslint-disable-next-line
 import Animus from "./lib/animus/package";
 
-let c = Animus.Utility.Color.Create(75, 0, 130),
-    r = c.PrintLabel();
+let t = new Animus.Quanta.QCollection("root"),
+    t0 = new Animus.Quanta.QString("r.0", "cats");
+t.Add(t0);
+t.Add(new Animus.Quanta.QString("r.1", "dogs"));
+t.Add(new Animus.Quanta.QNumeric("r.2", 56));
 
-console.log(r);
+let c = new Animus.Quanta.QCollection("child");
+t.Add(c);
+c.Add(new Animus.Quanta.QString("label a", "skrwlz"));
+c.Add(new Animus.Quanta.QNumeric("label b", 5.2));
+c.Add(new Animus.Quanta.QNumeric("36.1235"));
 
-let t = Animus.Utility.Color.Create(230, 230, 230);
-
-console.log(t.PrintLabel());
-console.log(t.PrintLabel(true, 0.05));
+let td = Animus.Quanta.Transformer.ToDelimited(t);
+console.log(td);
 
 class App extends Component {
     render() {

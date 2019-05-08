@@ -10,6 +10,9 @@ import QObject from "./QObject";
 import QFunction from "./QFunction";
 import QCollection from "./QCollection";
 
+import Transformer from "./Transformer";
+import Parser from "./Parser";
+
 export default {
     Quantum,
 
@@ -20,5 +23,8 @@ export default {
     QObject,
     QFunction,
 
-    QCollection
+    QCollection,
+
+    Transformer,
+    Parser
 }
