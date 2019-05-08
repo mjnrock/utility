@@ -14,6 +14,7 @@ let beacon = new Animus.Hive.Beacon(),
 beacon.Attach("subscription-add", (...args) => console.log("I'm SUBSCRIBED!!", ...args));
 beacon.Attach("metabolism-begin", (...args) => console.log("I'm METABOLIZING!!", ...args));
 beacon.SubscribeTo(cell, cell2);
+console.log(beacon);
 
 let beta = new Animus.Cellular.BetaEnzyme("add", (cell, a, b) => {
     return a + b;
