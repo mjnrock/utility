@@ -140,6 +140,22 @@ class Color {
             allowTransparency ? Math.random() : 1.0
         );
     }
+
+    static FromLabel(label) {
+        label = label.replace(/[^a-zA-Z0-9]/gi, "").toLowerCase();
+
+        let result = Color.Labels[label];
+        if(result !== null && result !== void 0) {
+            return new Color(
+                result[0],
+                result[1],
+                result[2],
+                1.0
+            );
+        }
+        
+        console.warn("[Operation Aborted]: Not a valid label");
+    }
 }
 
 Color.EnumType = Object.freeze({

@@ -7,11 +7,6 @@ import React, { Component } from "react";
 // eslint-disable-next-line
 import Animus from "./lib/animus/package";
 
-let c = Animus.Utility.Color.Create(75, 0, 130),
-    r = c.ToLabel();
-
-console.log(r);
-
 class App extends Component {
     render() {
         return (
