@@ -15,31 +15,46 @@ class Color {
         }
     }
 
-    SetTypeHex() {
+    ToggleHex() {
         this._type = Color.EnumType.HEX;
 
         return this;
     }
-    SetTypeRGB() {
+    ToggleRGB() {
         this._type = Color.EnumType.RGB;
 
         return this;
     }
-    SetTypeRGBA() {
+    ToggleRGBA() {
         this._type = Color.EnumType.RGBA;
 
         return this;
     }
+    ToggleHSL() {
+        this._type = Color.EnumType.HSL;
+
+        return this;
+    }
+    ToggleHSV() {
+        this._type = Color.EnumType.HSV;
+
+        return this;
+    }
+
     Get() {
         switch(this._type) {
             case Color.EnumType.HEX:
-                return this.ToHex();
+                return this.PrintHex();
             case Color.EnumType.RGB:
-                return this.ToRGB();
+                return this.PrintRGB();
             case Color.EnumType.RGBA:
-                return this.ToRGBA();
+                return this.PrintRGBA();
+            case Color.EnumType.HSL:
+                return this.PrintHSL();
+            case Color.EnumType.HSV:
+                return this.PrintHSV();
             default:
-                return this.RGB();
+                return this.PrintRGB();
         }
     }
 
@@ -55,17 +70,105 @@ class Color {
     A() {
         return +this._value.a;
     }
-
-    ToHex() {
-        return Color.RGBtoHex(this.R(), this.G(), this.B());
+    RGB() {
+        return [
+            this.R(),
+            this.G(),
+            this.B()
+        ];
     }
-    ToRGB() {
+    RGBA() {
+        return [
+            this.R(),
+            this.G(),
+            this.B(),
+            this.A()
+        ];
+    }
+    Hex() {
+        return [
+            Color.RGBComponent2Hex(this.R()),
+            Color.RGBComponent2Hex(this.G()),
+            Color.RGBComponent2Hex(this.B())
+        ];
+    }
+
+    PrintHex() {
+        return Color.RGB2Hex(this.R(), this.G(), this.B());
+    }
+    PrintRGB() {
         return `rgb(${ this.R() }, ${ this.G() }, ${ this.B() })`;
     }
-    ToRGBA() {
+    PrintRGBA() {
         return `rgba(${ this.R() }, ${ this.G() }, ${ this.B() }, ${ this.A() })`;
     }
-    ToLabel() {
+    PrintHSL() {
+        let r = this.R(),
+            g = this.G(),
+            b = this.B();
+      
+        let max = Math.max(r, g, b), min = Math.min(r, g, b);
+        let h, s, l = (max + min) / 2;
+      
+        if(max === min) {
+            h = s = 0; // achromatic
+        } else {
+            let d = max - min;
+            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        
+            switch (max) {
+                case r:
+                    h = (g - b) / d + (g < b ? 6 : 0);
+                    break;
+                case g:
+                    h = (b - r) / d + 2;
+                    break;
+                case b:
+                    h = (r - g) / d + 4;
+                    break;
+                default:
+                    break;
+            }
+        
+            h /= 6;
+        }
+      
+        return `hsl(${ h }, ${ s }, ${ l })`;
+    }
+    PrintHSV() {
+        let r = this.R(),
+            g = this.G(),
+            b = this.B();
+
+        let max = Math.max(r, g, b), min = Math.min(r, g, b);
+        let h, s, v = max;
+
+        let d = max - min;
+        s = max === 0 ? 0 : d / max;
+
+        if (max === min) {
+            h = 0; // achromatic
+        } else {
+            switch (max) {
+                case r:
+                    h = (g - b) / d + (g < b ? 6 : 0);
+                    break;
+                case g:
+                    h = (b - r) / d + 2;
+                    break;
+                case b:
+                    h = (r - g) / d + 4;
+                    break;
+                default:
+                    break;
+            }
+
+            h /= 6;
+        }
+
+        return `hsv(${ h }, ${ s }, ${ v })`;
+    }
+    PrintLabel() {
         let colors = Object.entries(Color.Labels);
 
         try {
@@ -109,7 +212,7 @@ class Color {
         return false;
     }
 
-    static RGBtoHex(r, g, b) {
+    static RGB2Hex(r, g, b) {
         if(arguments.length === 1 && (arguments[0] instanceof String || typeof arguments[0] === "string")) {            
             let rgb = r.match(/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i);
 
@@ -119,13 +222,12 @@ class Color {
                 ("0" + parseInt(rgb[3], 10).toString(16)).slice(-2) : '';
         }
 
-        let compToHex = (c) => {
-            let hex = c.toString(16);
+        return `#${ Color.RGBComponent2Hex(r) }${ Color.RGBComponent2Hex(g) }${ Color.RGBComponent2Hex(b) }`.toUpperCase();
+    }
+    static RGBComponent2Hex(c) {
+        let hex = c.toString(16);
 
-            return hex.length === 1 ? `0${ hex }` : hex;
-        };
-
-        return `#${ compToHex(r) }${ compToHex(g) }${ compToHex(b) }`.toUpperCase();
+        return hex.length === 1 ? `0${ hex }` : hex;
     }
 
     static Create(r = 255, g = 255, b = 255, a = 1.0) {
@@ -161,10 +263,12 @@ class Color {
 Color.EnumType = Object.freeze({
     HEX: "hex",
     RGB: "rgb",
-    RGBA: "rgba"
+    RGBA: "rgba",
+    HSL: "hsl",
+    HSV: "hsv"
 });
 
-Color.Labels = {
+Color.Labels = Object.freeze({
     "aliceblue": [240, 248, 255],
     "antiquewhite": [250, 235, 215],
     "aqua": [0, 255, 255],
@@ -313,6 +417,6 @@ Color.Labels = {
     "whitesmoke": [245, 245, 245],
     "yellow": [255, 255, 0],
     "yellowgreen": [154, 205, 50]
-};
+});
 
 export default Color;
