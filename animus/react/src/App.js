@@ -15,9 +15,11 @@ t.Add(new Animus.Quanta.QNumeric("r.2", 56));
 
 let c = new Animus.Quanta.QCollection("child");
 t.Add(c);
-c.Add(new Animus.Quanta.QString("label a", "skrwlz"));
+c.MakeTyped(Animus.Quanta.Quantum.EnumType.NUMERIC);
+c.Add(new Animus.Quanta.QNumeric("label a", "9"));
 c.Add(new Animus.Quanta.QNumeric("label b", 5.2));
 c.Add(new Animus.Quanta.QNumeric("36.1235"));
+c.Add(new Animus.Quanta.QString("fish"));
 
 let td = Animus.Quanta.Transformer.ToDelimited(t);
 console.log(td);

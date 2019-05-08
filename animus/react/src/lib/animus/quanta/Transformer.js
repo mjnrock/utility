@@ -137,17 +137,15 @@ class Transformer {
 				+s[i].Tag.GetOrdinality()
 			];
 			if (s[i].Tag instanceof Quanta.QCollection) {
-				row.push(+s[i].Tag.Size());
-				row.push(null);
+                row.push(+s[i].Tag.Size());
+                
+                if(s[i].Tag.IsTyped()) {
+                    row.push(s[i].Tag.GetContentType());
+                } else {
+                    row.push(null);
+                }
             }
-            // else if (s[i].Tag instanceof Tag.TagList) {
-			// 	row.push(+s[i].Tag.Size());
-			// 	row.push(+s[i].Tag.GetContentType());
-            // }
-            else if (
-				!!makeTextReadible &&
-				s[i].Tag instanceof Quanta.QString
-			) {
+            else if (!!makeTextReadible && s[i].Tag instanceof Quanta.QString) {
 				row.push(
 					s[i].Tag.GetValue()
 						.toString()

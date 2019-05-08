@@ -1,6 +1,7 @@
 import Quantum from "./Quantum";
 import QNumeric from "./QNumeric";
 import QString from "./QString";
+import Error from "./../error/package";;
 
 class QCollection extends Quantum {
     constructor(key = null, ...children) {
@@ -13,19 +14,26 @@ class QCollection extends Quantum {
         return value instanceof QCollection || (value.type && value.type === Quantum.EnumType.COLLECTION);
     }
 
+    GetContentType() {
+        return this._meta._contentType;
+    }
+    
+    IsTyped() {
+        return this._meta._contentType !== null && this._meta._contentType !== void 0;
+    }
     MakeTyped(type) {
         if(QNumeric.Test(type)) {
-            this._meta._typed = type;
+            this._meta._contentType = type;
 
             return this;
         }
 
-        console.warn("[Operation Aborted]: Caught non-numeric enumeration as argument.");
+        new Error.InvalidEnumeratorError().Warn();
 
         return this;
     }
     MakeUntyped() {
-        delete this._meta._typed;
+        delete this._meta._contentType;
 
         return this;
     }
@@ -33,7 +41,15 @@ class QCollection extends Quantum {
     Add(...quanta) {
         quanta.forEach((quantum, i) => {
             if(quantum instanceof Quantum) {
-                this._value[ quantum.GetId() ] = quantum;
+                if(this.IsTyped()) {
+                    if(quantum.GetType() === this.GetContentType()) {
+                        this._value[ quantum.GetId() ] = quantum;
+                    } else {
+                        new Error.ContentTypeError(this.GetContentType(), quantum.GetType()).Warn();
+                    }
+                } else {
+                    this._value[ quantum.GetId() ] = quantum;
+                }
             }
         });
 

@@ -3,11 +3,11 @@ import Quantum from "./Quantum";
 class QNumeric extends Quantum {
     constructor(key, value) {
         if(arguments.length === 1) {
-            super(Quantum.EnumType.INTEGER, { value: key });
+            super(Quantum.EnumType.NUMERIC, { value: key });
             
             this.SetValue(key);
         } else {
-            super(Quantum.EnumType.INTEGER, { value,  key });
+            super(Quantum.EnumType.NUMERIC, { value,  key });
 
             this.SetValue(value);
         }
@@ -28,7 +28,7 @@ class QNumeric extends Quantum {
     Deserialize(json) {
         super.Deserialize.call(this, json);
 
-        this.SetType(Quantum.EnumType.INTEGER);
+        this.SetType(Quantum.EnumType.NUMERIC);
     }
 }
 

@@ -124,7 +124,7 @@ class Quantum {
 
 Quantum.EnumType = Object.freeze({
     BOOLEAN: 1,
-    INTEGER: 2,
+    NUMERIC: 2,
     STRING: 3,
     ARRAY: 4,
     OBJECT: 5,
