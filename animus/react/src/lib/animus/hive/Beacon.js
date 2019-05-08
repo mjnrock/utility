@@ -4,7 +4,7 @@ class Beacon extends Subscribable {
 	constructor(state = {}) {
 		super(state);
 
-		this._handlers = {};
+        this._handlers = {};
 	}
     
     Attach(event, callback) {
@@ -36,7 +36,7 @@ class Beacon extends Subscribable {
 	next(payload) {
         try {
             this._handlers[ payload.type ](payload);
-        } catch(e) {
+        } catch(e) {            
             console.warn(`Nothing attached to "${ payload.type }"`);
         }
 
