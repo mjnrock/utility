@@ -44,7 +44,7 @@ class QCollection extends Quantum {
             if(quantum instanceof Quantum) {
                 delete this._value[ quantum.GetId() ];
             } else if(QString.Test(quantum)) {
-                if(quantum.match(/\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b/gi)) {
+                if(quantum.match(/^[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i)) { // v4 UUID
                     delete this._value[ quantum ];
                 }
             }

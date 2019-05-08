@@ -2,7 +2,18 @@ import Animus from "./../package";
 
 class Parser {
     static Query(tag, query) {
-        //TODO
+        //TODO  Compare to CSS selectors
+
+        //* _    type
+        //* .    tier separator
+        //* []   meta block
+            // [cat], [key=r.3], [id=/uuidregex/gi], [id=CA761232-ED42-11CE-BACD-00AA0057B223]
+            // |, &, !     OR, AND, NOT
+        //* $    meta.key
+        //* #    child index
+            // #0, #1-6, #*
+            // -, *, <,,,>       range, all, separator
+        //* @    meta.id
     }
 
     static Find(tag, value, searchType = Animus.Quanta.Quantum.EnumAttributeType.KEY) {
