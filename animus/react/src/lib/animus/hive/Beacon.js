@@ -32,21 +32,16 @@ class Beacon extends Subscribable {
             subscribable.Unsubscribe(this);
         }
     }
+    
+	next(payload) {
+        try {
+            this._handlers[ payload.type ](payload);
+        } catch(e) {
+            console.warn(`Nothing attached to "${ payload.type }"`);
+        }
 
-    next(payload) {
-        console.log(payload);
-    }
-
-    //TODO Make this work for new version (De/Attach alter default event handlers/routers)
-	// next(caller, obj) {
-    //     try {
-    //         this._registry[ obj.type ](obj);
-    //     } catch(e) {
-    //         console.warn(`Nothing attached to "${ obj.type }"`);
-    //     }
-
-	// 	return obj;
-	// }
+		return payload;
+	}
 }
 
 export default Beacon;

@@ -7,22 +7,22 @@ import React, { Component } from "react";
 // eslint-disable-next-line
 import Animus from "./lib/animus/package";
 
-let t = new Animus.Quanta.QCollection("root"),
-    t0 = new Animus.Quanta.QString("r.0", "cats");
-t.Add(t0);
-t.Add(new Animus.Quanta.QString("r.1", "dogs"));
-t.Add(new Animus.Quanta.QNumeric("r.2", 56));
+let beacon = new Animus.Hive.Beacon(),
+    cell = new Animus.Cellular.Cell(),
+    cell2 = new Animus.Cellular.Cell();
 
-let c = new Animus.Quanta.QCollection("child");
-t.Add(c);
-c.MakeTyped(Animus.Quanta.Quantum.EnumType.NUMERIC);
-c.Add(new Animus.Quanta.QNumeric("label a", "9"));
-c.Add(new Animus.Quanta.QNumeric("label b", 5.2));
-c.Add(new Animus.Quanta.QNumeric("36.1235"));
-c.Add(new Animus.Quanta.QString("fish"));
+beacon.Attach("subscription-add", (...args) => console.log("I'm SUBSCRIBED!!", ...args));
+beacon.Attach("metabolism-begin", (...args) => console.log("I'm METABOLIZING!!", ...args));
+beacon.SubscribeTo(cell, cell2);
 
-let td = Animus.Quanta.Transformer.ToDelimited(t);
-console.log(td);
+let beta = new Animus.Cellular.BetaEnzyme("add", (cell, a, b) => {
+    return a + b;
+});
+cell.Metabolize(beta);
+beacon.Attach("invocation-action", (...args) => console.log("I'm INVOKED!!", ...args));
+cell.Teach("add", cell2);
+beacon.Detach("invocation-action");
+cell2.ƒ.add(cell2, 15, 96);
 
 class App extends Component {
     render() {
