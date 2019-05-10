@@ -13,15 +13,17 @@ class Oracle extends Subscribable {
         this._organelles = Object.freeze(organelles);
         this._cells = {};
 
-        this.ß = (...args) => {
-            if(args.length === 2) {
-                this._beacon.Attach(args[0], args[1]);
-            } else if(args.length === 1) {
-                this._beacon.Detach(args[0]);
-            }
-            
-            return this.GetBeacon();
-        };
+        this.ß = this._beacon;
+    }
+
+    B() {
+        if(arguments.length === 2) {
+            this._beacon.Attach(arguments[0], arguments[1]);
+        } else if(arguments.length === 1) {
+            this._beacon.Detach(arguments[0]);
+        }
+        
+        return this.GetBeacon();
     }
 
     GetBeacon() {
