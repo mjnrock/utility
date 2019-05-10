@@ -25,6 +25,12 @@ cell.Teach("add", cell2);
 beacon.Detach("invocation-action");
 cell2.ƒ.add(cell2, 15, 96);
 
+let mu = new Animus.Cellular.MuEnzyme("custom-thang", {
+    message: "Sup guy?"
+});
+beacon.Attach("custom-thang", (...args) => console.log("I'm CUSTOM!", ...args));
+cell.Metabolize(mu);
+
 class App extends Component {
     render() {
         return (

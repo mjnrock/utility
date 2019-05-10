@@ -96,7 +96,9 @@ Enzyme.EnumType = Object.freeze({
     BETA: "BETA",   // SET - Cell Behavior
     GAMMA: "GAMMA",   // INVOKE - Cell Behavior
 
-    ZETA: "ZETA",   // INVOKE - Organelle
+    ZETA: "ZETA",   // INVOKE - Organelle,
+
+    MU: "MU"    // INVOKE - Custom Event (Calls this.Invoke)
 });
 
 export default Enzyme;
