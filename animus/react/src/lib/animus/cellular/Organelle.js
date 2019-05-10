@@ -1,7 +1,7 @@
 import Subscribable from "./../Subscribable";
 import Metabolite from "./Metabolite";
 
-//! Enzymes sort of make this useless.  Find alternative use and code; there is value somewhere in a sequencer.
+//! ZetaEnzyme gets a @flag from this.Conform, thus this.Sequence callback should activate from @flag (cf. Redux)
 
 class Organelle extends Subscribable {
     constructor(processType, ...callbacks) {
