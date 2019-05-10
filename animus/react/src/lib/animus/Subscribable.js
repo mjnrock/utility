@@ -15,6 +15,10 @@ class Subscribable {
     }
 
 	GetState() {
+        if(this.State instanceof Quanta.Quantum) {
+            return this.State.GetValue();
+        }
+
 		return this.State;
 	}
 	SetState(state) {

@@ -34,14 +34,29 @@ class Beacon extends Subscribable {
     }
     
 	next(payload) {
-        try {
-            this._handlers[ payload.type ](payload);
-        } catch(e) {            
-            console.warn(`Nothing attached to "${ payload.type }"`);
+        let handler = this._handlers[ payload.type ];
+
+        if(handler) {
+            handler(payload);
+            
+            this.Invoke(Beacon.EnumEventType.HANDLE, {
+                handler,
+                data: payload
+            });
+        } else {        
+            this.Invoke(Beacon.EnumEventType.HANDLE_ERROR, {
+                scope: this,
+                message: `Nothing attached to <${ payload.type }>`
+            });
         }
 
 		return payload;
 	}
 }
+
+Beacon.EnumEventType = Object.freeze({
+    HANDLE: "event-handle",
+    HANDLE_ERROR: "event-handle-error",
+});
 
 export default Beacon;
