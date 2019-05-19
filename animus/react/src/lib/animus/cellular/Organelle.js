@@ -3,16 +3,16 @@ import Metabolite from "./Metabolite";
 
 //! ZetaEnzyme gets a @flag from this.Conform, thus this.Sequence callback should activate (or not) from @flag (cf. Redux)
 
-class Organelle extends Subscribable {
-    constructor(processType, ...callbacks) {
+class Organelle extends Subscribable {    
+    constructor(processType, ...activators) {
         super();
 
-        if(typeof processType === "function") {
+        if(Array.isArray(processType)) {
             this.Type = Organelle.EnumProcessType.FLOW;
-            this.Sequence = [ processType, ...callbacks ];
+            this.Sequence = [ processType, ...activators ];
         } else {
             this.Type = processType || Organelle.EnumProcessType.FLOW;
-            this.Sequence = callbacks;
+            this.Sequence = activators;
         }
     }
 
@@ -23,18 +23,32 @@ class Organelle extends Subscribable {
         for(let i in this.Sequence) {
             i = +i;
             let step = this.Sequence[i],
-                metabolite;
-            
-            if(typeof step === "function") {
-                if(this.Type === Organelle.EnumProcessType.FEED && i > 0) {
-                    let val = output[i - 1].GetOut();
-                    
-                    metabolite = Metabolite.Make(val, step(val), i);
-                } else {
-                    metabolite = Metabolite.Make(payload, step(payload), i);
-                }
+                metabolite,
+                input,
+                fn;
 
-                output.push(metabolite);   
+            if(typeof step[0] === "function") {
+                if(step.length === 2 && step[0](this, payload) === true) {
+                    fn = step[1];
+                } else if(step.length === 1) {
+                    fn = step[0];
+                }
+            } else if(typeof step[0] === "string" || step[0] instanceof String) {
+                if(step[0] === payload.GetKey()) {
+                    fn = step[1];
+                }
+            }
+
+            if(this.Type === Organelle.EnumProcessType.FEED && i > 0) {
+                input = output[i - 1].GetOut();
+            } else {
+                input = payload;
+            }
+            
+            if(typeof fn === "function") {
+                metabolite = Metabolite.Make(payload, fn(input), i);
+
+                output.push(metabolite);
             } else {
                 console.warn("[Operation Aborted]: Sequence contains a non-function");
             }
@@ -58,6 +72,10 @@ class Organelle extends Subscribable {
             cell,
             args
         };
+    }
+
+    static Package(...activators) {
+        return new Organelle(Organelle.EnumProcessType.FLOW, activators);
     }
 }
 

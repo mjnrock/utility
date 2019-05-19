@@ -8,11 +8,15 @@ class Beacon extends Subscribable {
 	}
     
     Attach(event, callback) {
-        this._handlers[event] = callback;
+        if(!(event in this._handlers)) {
+            this._handlers[event] = [];
+        }
+
+        this._handlers[event].push(callback);
 
         return this;
     }
-    Detach(event) {
+    Unhandle(event) {
         delete this._handlers[event];
 
         return this;
@@ -34,14 +38,16 @@ class Beacon extends Subscribable {
     }
     
 	next(payload) {
-        let handler = this._handlers[ payload.type ];
+        if(payload.type in this._handlers) {
+            let handlers = this._handlers[ payload.type ];
 
-        if(handler) {
-            handler(payload);
+            handlers.forEach(handler => {
+                handler(payload);
             
-            this.Invoke(Beacon.EnumEventType.HANDLE, {
-                handler,
-                data: payload
+                this.Invoke(Beacon.EnumEventType.HANDLE, {
+                    handlers,
+                    data: payload
+                });
             });
         } else {        
             this.Invoke(Beacon.EnumEventType.HANDLE_ERROR, {
