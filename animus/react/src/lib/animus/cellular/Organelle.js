@@ -7,7 +7,7 @@ class Organelle extends Subscribable {
     constructor(processType, ...activators) {
         super();
 
-        if(Array.isArray(processType)) {
+        if(Array.isArray(processType) || typeof processType === "function") {
             this.Type = Organelle.EnumProcessType.FLOW;
             this.Sequence = [ processType, ...activators ];
         } else {
@@ -27,7 +27,9 @@ class Organelle extends Subscribable {
                 input,
                 fn;
 
-            if(typeof step[0] === "function") {
+            if(typeof step === "function") {
+                fn = step;
+            } else if(typeof step[0] === "function") {
                 if(step.length === 2 && step[0](this, payload) === true) {
                     fn = step[1];
                 } else if(step.length === 1) {

@@ -8,6 +8,7 @@ import React, { Component } from "react";
 import Animus from "./lib/animus/package";
 
 let org = new Animus.Cellular.Organelle(
+    payload => console.log(0),
     [ payload => console.log(1) ],
     [ "test", payload => console.log(2) ],
     [ () => false, payload => console.log(3) ],
@@ -16,7 +17,7 @@ let org = new Animus.Cellular.Organelle(
 let z1 = new Animus.Cellular.ZetaEnzyme("cats");
 let z2 = new Animus.Cellular.ZetaEnzyme("test");
 
-// org.Metabolize(z1);
+org.Metabolize(z1);
 org.Metabolize(z2);
 
 class App extends Component {
