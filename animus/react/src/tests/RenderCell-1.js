@@ -1,11 +1,4 @@
-import React, { Component } from "react";
-
-// import "./tests/Cell-1.test";
-// import "./tests/Organelle-1.test";
-// import "./tests/Hive-1.test";
-
-// eslint-disable-next-line
-import Animus from "./lib/animus/package";
+import Animus from "../lib/animus/package";
 
 let org = new Animus.Cellular.Organelle(
     payload => console.log(0),
@@ -57,13 +50,3 @@ let mu = new Animus.Cellular.ZetaEnzyme("render");
 // console.log(org);
 // console.log(rend);
 rend.Metabolize(mu);
-
-class App extends Component {
-    render() {
-        return (
-            <div>Animus! ^_^</div>
-        );
-    }
-}
-
-export default App;

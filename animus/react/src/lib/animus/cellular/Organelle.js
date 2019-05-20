@@ -28,10 +28,6 @@ class Organelle extends Subscribable {
                 input,
                 fn;
 
-            console.log("-------");
-            console.log(payload, this._sequence, step);
-            console.log("-------");
-
             if(this._type === Organelle.EnumProcessType.FEED && i > 0) {
                 input = output[i - 1].GetOut();
             } else {
@@ -59,8 +55,13 @@ class Organelle extends Subscribable {
             }
             
             if(fn === false) {
+                //  NOOP
                 console.info("[Skipped Iteration]: Activation condition was not met");
             } else if(typeof fn === "function") {
+                console.log("-------");
+                console.log(payload, step);
+                console.log("-------");
+
                 metabolite = Metabolite.Make(payload, fn(input), i);
 
                 output.push(metabolite);

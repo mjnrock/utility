@@ -127,6 +127,10 @@ class Cell extends Subscribable {
     Mitosis(qty = 1) {
         //TODO Make a @qty copies
     }
+
+    next(...enzymes) {
+        return this.Metabolize(...enzymes);
+    }
 }
 
 Cell.EnumEventType = Object.freeze({

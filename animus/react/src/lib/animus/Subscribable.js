@@ -32,6 +32,15 @@ class Subscribable {
 
 		return this;
 	}
+	MergeState(addition = {}) {
+        //! This construction only works if _state is QObject.  If changed to QCollection, adjust.
+		this.SetState({
+            ...this.GetState(),
+            ...addition
+        });
+
+		return this;
+	}
 
 	Invoke(type, args = {}) {
 		this._subject$.next({
