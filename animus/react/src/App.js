@@ -40,20 +40,8 @@ let rend = new Animus.Cellular.DOM.RenderCell();
 let mu = new Animus.Cellular.ZetaEnzyme("render");
 
 // console.log(org);
-console.log(rend);
+// console.log(rend);
 
-
-rend.AddElement("test", (t, s) => (
-    <div>
-        { s.cats }
-    </div>
-));
-rend.Metabolize(mu);
-
-rend.MergeState({
-    cats: "State Overwrite Test"
-});
-mu.Recycle();
 rend.Metabolize(mu);
 
 class App extends Component {

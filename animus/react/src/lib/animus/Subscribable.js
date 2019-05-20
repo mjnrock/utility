@@ -34,6 +34,7 @@ class Subscribable {
 	}
 	MergeState(addition = {}) {
         //! This construction only works if _state is QObject.  If changed to QCollection, adjust.
+        //TODO When a QCollection, add an AQT query parameter to inject where desired
 		this.SetState({
             ...this.GetState(),
             ...addition
