@@ -67,6 +67,14 @@ class RenderCell extends Cell {
         });
     }
 
+    //! This is likely not complete, as it has not been tested on React > refs and DOM event handling (e.g. onclick, onsubmit, etc.)
+    //! c.f. const invoke = ... above
+    /**
+     * @param {string} name The name of the (React class) component
+     * @param {function|JSX} fn
+     * If @fn is a function, it will be passed (this, this.GetState()) from the RenderCell
+     * If @fn is just JSX, it will render the static content
+     */
     AddElement(name, fn) {
         let state = {
             [name]: (t, s) => {
