@@ -10,6 +10,7 @@ class ZetaEnzyme extends Enzyme {
     Activate(entity) {
         return super.Activate.call(this, entity, () => {
             entity._organelles.forEach(org => {
+                console.log(entity, org);
                 if(org instanceof Organelle) {
                     org.Metabolize(
                         Organelle.Conform(

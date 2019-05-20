@@ -9,7 +9,7 @@ class Organelle extends Subscribable {
 
         if(Array.isArray(processType) || typeof processType === "function") {
             this.Type = Organelle.EnumProcessType.FLOW;
-            this.Sequence = [ processType, ...activators ];
+            this.Sequence = [ ...arguments ];
         } else {
             this.Type = processType || Organelle.EnumProcessType.FLOW;
             this.Sequence = activators;
@@ -17,9 +17,6 @@ class Organelle extends Subscribable {
     }
 
     Metabolize(payload) {
-        console.log("-------");
-        console.log(payload);
-        console.log("-------");
 		this.Invoke(Organelle.EnumEventType.BEGIN, payload);
         
         let output = [];
@@ -29,6 +26,10 @@ class Organelle extends Subscribable {
                 metabolite,
                 input,
                 fn;
+
+            console.log("-------");
+            console.log(payload, this.Sequence);
+            console.log("-------");
 
             if(typeof step === "function") {
                 fn = step;
@@ -88,7 +89,7 @@ class Organelle extends Subscribable {
     }
 
     static Package(...activators) {
-        return new Organelle(Organelle.EnumProcessType.FLOW, activators);
+        return new Organelle(Organelle.EnumProcessType.FLOW, ...activators);
     }
 }
 

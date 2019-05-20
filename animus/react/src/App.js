@@ -6,6 +6,7 @@ import React, { Component } from "react";
 
 // eslint-disable-next-line
 import Animus from "./lib/animus/package";
+import RenderCell from "./lib/animus/cellular/dom/RenderCell";
 
 let org = new Animus.Cellular.Organelle(
     payload => console.log(0),
@@ -32,8 +33,14 @@ let z2 = new Animus.Cellular.ZetaEnzyme("test");
 let cell = new Animus.Cellular.Cell();
 cell.Endogenize(org);
 
-cell.Metabolize(z1);
-cell.Metabolize(z2);
+// cell.Metabolize(z1);
+// cell.Metabolize(z2);
+
+let rend = new Animus.Cellular.DOM.RenderCell();
+let mu = new Animus.Cellular.ZetaEnzyme("render");
+
+console.log(rend);
+rend.Metabolize(mu);
 
 class App extends Component {
     render() {

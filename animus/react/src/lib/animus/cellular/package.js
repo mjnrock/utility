@@ -13,6 +13,8 @@ import ZetaEnzyme from "./ZetaEnzyme";
 
 import MuEnzyme from "./MuEnzyme";
 
+import DOM from "./dom/package";
+
 export default {
     Metabolite,
     Organelle,
@@ -26,5 +28,7 @@ export default {
 
     ZetaEnzyme,
 
-    MuEnzyme
+    MuEnzyme,
+
+    DOM
 }

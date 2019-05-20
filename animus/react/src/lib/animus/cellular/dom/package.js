@@ -1,4 +1,4 @@
-import  RenderCell from "./RenderCell" ;
+import RenderCell from "./RenderCell" ;
 
 export default {
     RenderCell
