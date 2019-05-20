@@ -37,25 +37,23 @@ cell.Endogenize(org);
 
 let rend = new Animus.Cellular.DOM.RenderCell();
 
-rend.HTMLTestVariable = 1594984984;
-rend.MergeState({
-    cats: 15615
-});
-rend.MergeState({
-    // cats: 15615, //! This doesn't work, must be set in separate declaration
-    test: (
-        <div>
-            <div>RenderCell Output!</div>
-            <div>{ rend.GetState().cats }</div>
-            <div>{ rend.HTMLTestVariable }</div>
-        </div>
-    )
-});
-
 let mu = new Animus.Cellular.ZetaEnzyme("render");
 
 // console.log(org);
-// console.log(rend);
+console.log(rend);
+
+
+rend.AddElement("test", (t, s) => (
+    <div>
+        { s.cats }
+    </div>
+));
+rend.Metabolize(mu);
+
+rend.MergeState({
+    cats: "State Overwrite Test"
+});
+mu.Recycle();
 rend.Metabolize(mu);
 
 class App extends Component {

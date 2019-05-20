@@ -24,7 +24,10 @@ class RenderCell extends Cell {
         Organelle.Make(
             [ "render", payload => {
                 console.log(payload);
-                ReactDOM.render(this.GetState().test, document.getElementById("root2"));
+                ReactDOM.render(
+                    React.createElement(this.GetState().test(this, this.GetState())),
+                    document.getElementById("root2")
+                );
 
                 //TODO Write render logic that renders the JSX
                 //TODO (Initially) write the this.state update hook here for the JSX component
@@ -44,6 +47,25 @@ class RenderCell extends Cell {
                 }
             }]
         ));
+
+        this.MergeState({
+            cats: "State Test"
+        });
+        this.AddElement("test", (t, s) => (
+            <div>
+                { s.cats }
+            </div>
+        ));
+    }
+
+    AddElement(name, fn) {
+        let state = {
+            [name]: (t, s) => () => fn(t, s)
+        };
+
+        this.MergeState(state);
+
+        return this;
     }
 }
 
