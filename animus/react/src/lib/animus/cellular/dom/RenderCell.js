@@ -9,7 +9,31 @@ class RenderCell extends Cellular.Cell {
             templates: {}
         },
         Organelle.Package(
-            //? At this point, this "render" will invoke the ReactDOM.render() method to re-render its content
+            [ "render", payload => {
+                let invoke = (event, payload) => {
+                    //TODO invoke "dispatch"
+                };
+
+                //TODO Write render logic
+            }],
+            [ "dispatch", payload => {
+                // payload = {
+                //     action: The name of the function/action,
+                //     key: The name of the Component,
+                //     dispatcher: The name of the dispatcher,
+                //     args: The arguments for the dispatcher
+                // }
+
+                if(payload.action === "invoke") {
+                    let state = this.GetState()[payload.key];
+                    state["dispatchers"][payload.dispatcher](this, state, ...payload.args);
+                }
+            }],
+
+
+
+
+            //? A ZetaEnzyme("render") will invoke this function to re-render DOM content for a DOM-Element
             [ "render", () => {
                 //! Reread about Fragments: https://reactjs.org/docs/react-api.html#reactfragment, https://reactjs.org/blog/2017/11/28/react-v16.2.0-fragment-support.html#keyed-fragments
                 //TODO Rework this example to fit this Cell
