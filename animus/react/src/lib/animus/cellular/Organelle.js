@@ -1,35 +1,42 @@
 import Subscribable from "./../Subscribable";
 import Metabolite from "./Metabolite";
 
-//! ZetaEnzyme gets a @flag from this.Conform, thus this.Sequence callback should activate (or not) from @flag (cf. Redux)
+//! ZetaEnzyme gets a @flag from this.Conform, thus this._sequence callback should activate (or not) from @flag (cf. Redux)
 
 class Organelle extends Subscribable {    
-    constructor(processType, ...activators) {
+    constructor(...activators) {
         super();
 
-        if(Array.isArray(processType) || typeof processType === "function") {
-            this.Type = Organelle.EnumProcessType.FLOW;
-            this.Sequence = [ ...arguments ];
-        } else {
-            this.Type = processType || Organelle.EnumProcessType.FLOW;
-            this.Sequence = activators;
-        }
+        this._type = Organelle.EnumProcessType.FLOW;
+        this._sequence = [];
+
+        activators.forEach(act => {
+            if(Array.isArray(act) || typeof act === "function") {
+                this._sequence.push(act);
+            } else if(typeof act === "string" || act instanceof String) {
+                this._type = act;
+            }
+        });
     }
 
     Metabolize(payload) {
 		this.Invoke(Organelle.EnumEventType.BEGIN, payload);
         
-        let output = [];
-        for(let i in this.Sequence) {
-            i = +i;
-            let step = this.Sequence[i],
-                metabolite,
+        let output = [];        
+        this._sequence.forEach((step, i) => {
+            let metabolite,
                 input,
                 fn;
 
             console.log("-------");
-            console.log(payload, this.Sequence, step);
+            console.log(payload, this._sequence, step);
             console.log("-------");
+
+            if(this._type === Organelle.EnumProcessType.FEED && i > 0) {
+                input = output[i - 1].GetOut();
+            } else {
+                input = payload;
+            }
 
             if(typeof step === "function") {
                 fn = step;
@@ -50,12 +57,6 @@ class Organelle extends Subscribable {
                     fn = false;
                 }
             }
-
-            if(this.Type === Organelle.EnumProcessType.FEED && i > 0) {
-                input = output[i - 1].GetOut();
-            } else {
-                input = payload;
-            }
             
             if(fn === false) {
                 console.info("[Skipped Iteration]: Activation condition was not met");
@@ -67,8 +68,8 @@ class Organelle extends Subscribable {
                 console.warn("[Operation Aborted]: Sequence contains a non-function");
             }
             
-            this.Invoke(Organelle.EnumEventType.PROCESS, metabolite);
-        }
+            this.Invoke(Organelle.EnumEventType.PROCESSED, metabolite);
+        });
 
 		this.Invoke(Organelle.EnumEventType.END, output);
 
@@ -88,19 +89,19 @@ class Organelle extends Subscribable {
         };
     }
 
-    static Package(...activators) {
-        return new Organelle(Organelle.EnumProcessType.FLOW, ...activators);
+    static Make(...activators) {
+        return new Organelle(...activators);
     }
 }
 
 Organelle.EnumProcessType = Object.freeze({
-    FLOW: "process-flow",    // Perform each this.Sequence[i] by passing "payload"
-    FEED: "process-feed"     // Perform each this.Sequence[i] by passing results of "...this.Sequence[i - 1]"
+    FLOW: "process-flow",    // Perform each this._sequence[i] by passing "payload"
+    FEED: "process-feed"     // Perform each this._sequence[i] by passing results of "...this._sequence[i - 1]"
 });
 
 Organelle.EnumEventType = Object.freeze({
     BEGIN: "metabolism-begin",
-    PROCESS: "metabolism-process",
+    PROCESSED: "metabolism-processed",
     END: "metabolism-end"
 });
 

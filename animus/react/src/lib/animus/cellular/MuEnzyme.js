@@ -7,7 +7,7 @@ class MuEnzyme extends Enzyme {
     
     Activate(cell) {
         return super.Activate.call(this, cell, () => {
-            cell.Invoke(this.State.key, this.State.data);
+            cell.Invoke(this._state.key, this._state.data);
 
             return this;
         });

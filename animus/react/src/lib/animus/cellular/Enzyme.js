@@ -5,7 +5,7 @@ class Enzyme {
         this._id = NewUUID();
         this._status = true;
         
-        this.State = Object.freeze({
+        this._state = Object.freeze({
             type,
             key,
             data
@@ -24,11 +24,11 @@ class Enzyme {
     }
 
     GetType() {
-        return this.State.type;
+        return this._state.type;
     }
 
     GetKey() {
-        return this.State.key;
+        return this._state.key;
     }
     SetKey(key) {
         this.SetState(key, this.GetData());
@@ -37,7 +37,7 @@ class Enzyme {
     }
 
     GetData() {
-        return this.State.data;
+        return this._state.data;
     }
     SetData(data) {
         this.SetState(this.GetKey(), data);
@@ -46,11 +46,11 @@ class Enzyme {
     }
     
     GetState() {
-        return this.State;
+        return this._state;
     }
     SetState(key, data) {
-        this.State = Object.freeze({
-            type: this.State.type,
+        this._state = Object.freeze({
+            type: this._state.type,
             key,
             data
         });
@@ -79,7 +79,7 @@ class Enzyme {
     //     }
 
     //     this._id = json._id || NewUUID();
-    //     this.State = Object.freeze(json.State);
+    //     this._state = Object.freeze(json._state);
 
     //     return this;
     // }

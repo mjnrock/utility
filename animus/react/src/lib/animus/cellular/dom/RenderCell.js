@@ -26,7 +26,7 @@ class RenderCell extends Cell {
             )
         },
         [
-            Organelle.Package(
+            Organelle.Make(
                 [ "render", payload => {
                     console.log(payload);
                     ReactDOM.render(this.GetState().test, document.getElementById("root2"));

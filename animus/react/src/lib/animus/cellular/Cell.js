@@ -55,7 +55,7 @@ class Cell extends Subscribable {
             if(organelle instanceof Cellular.Organelle) {
                 arr.push(organelle);
             } else {
-                arr.push(Cellular.Organelle.Package(organelle));
+                arr.push(Cellular.Organelle.Make(organelle));
             }
         }
 
@@ -107,9 +107,9 @@ class Cell extends Subscribable {
             if(enzyme instanceof Cellular.Enzyme && enzyme._status === true) {                
                 let result = enzyme.Activate(this);
 
-                output.push([ enzyme.State.type, result ]);
+                output.push([ enzyme._state.type, result ]);
 
-                this.Invoke(Cell.EnumEventType.PROCESS, {
+                this.Invoke(Cell.EnumEventType.PROCESSED, {
                     enzyme,
                     result
                 });
@@ -133,7 +133,7 @@ Cell.EnumEventType = Object.freeze({
     ACTION: "invocation-action",
 
     BEGIN: "metabolism-begin",
-    PROCESS: "metabolism-process",
+    PROCESSED: "metabolism-processed",
     END: "metabolism-end"
 });
 

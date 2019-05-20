@@ -7,7 +7,7 @@ class OmegaEnzyme extends Enzyme {
     
     Activate(cell) {
         return super.Activate.call(this, cell, () => {
-            this.SetData(cell._actions[ this.State.key ]);
+            this.SetData(cell._actions[ this._state.key ]);
 
             return this.GetData();
         });

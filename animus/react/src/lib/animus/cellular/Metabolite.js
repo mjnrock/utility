@@ -4,7 +4,7 @@ class Metabolite {
     constructor(_in, _out, _i) {
         this._id = NewUUID();
         
-        this.State = Object.freeze({
+        this._state = Object.freeze({
             in: _in,
             out: _out,
             i: _i
@@ -12,17 +12,17 @@ class Metabolite {
     }
 
     GetIn() {
-        return this.State.in;
+        return this._state.in;
     }
     GetOut() {
-        return this.State.out;
+        return this._state.out;
     }
     GetStep() {
-        return this.State.i;
+        return this._state.i;
     }
 
     GetState() {
-        return this.State;
+        return this._state;
     }
 
     static Make(_in, _out, _i) {

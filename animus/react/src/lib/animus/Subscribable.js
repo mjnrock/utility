@@ -10,25 +10,25 @@ class Subscribable {
 		this._subscriptions = {};
 		this._origin = Date.now();
 
-		// this.State = Object.freeze(state);
-		this.State = new Quanta.QObject(state);
+		// this._state = Object.freeze(state);
+		this._state = new Quanta.QObject(state);
     }
 
 	GetState() {
-        if(this.State instanceof Quanta.Quantum) {
-            return this.State.GetValue();
+        if(this._state instanceof Quanta.Quantum) {
+            return this._state.GetValue();
         }
 
-		return this.State;
+		return this._state;
 	}
 	SetState(state) {
 		this.Invoke(Subscribable.EnumEventType.UPDATE, {
-			oldState: Object.freeze(this.State),
+			oldState: Object.freeze(this._state),
 			state: Object.freeze(state)
 		});
 
-		// this.State = Object.freeze(state);
-		this.State = new Quanta.QObject(state);
+		// this._state = Object.freeze(state);
+		this._state = new Quanta.QObject(state);
 
 		return this;
 	}

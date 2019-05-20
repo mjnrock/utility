@@ -13,10 +13,10 @@ class ZetaEnzyme extends Enzyme {
                 if(org instanceof Organelle) {
                     org.Metabolize(
                         Organelle.Conform(
-                            this.State.key,
+                            this._state.key,
                             this,
                             entity,
-                            this.State.data
+                            this._state.data
                         )
                     );
                 }

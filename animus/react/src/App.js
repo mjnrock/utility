@@ -39,8 +39,9 @@ cell.Endogenize(org);
 let rend = new Animus.Cellular.DOM.RenderCell();
 let mu = new Animus.Cellular.ZetaEnzyme("render");
 
+console.log(org);
 console.log(rend);
-rend.Metabolize(mu);
+// rend.Metabolize(mu);
 
 class App extends Component {
     render() {

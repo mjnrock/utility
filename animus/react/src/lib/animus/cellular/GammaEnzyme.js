@@ -7,7 +7,7 @@ class GammaEnzyme extends Enzyme {
 
     Activate(cell) {
         return super.Activate.call(this, cell, () => {
-            this.SetData(cell.Perform(this.State.key, ...this.State.data));
+            this.SetData(cell.Perform(this._state.key, ...this._state.data));
 
             return this.GetData();
         });

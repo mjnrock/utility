@@ -12,7 +12,7 @@ class RenderCell extends Cellular.Cell {
                 <div>Cats</div>
             )
         },
-        Cellular.Organelle.Package(
+        Cellular.Organelle.Make(
             [ "render", payload => {
                 let invoke = (action, componentName, dispatcher, ...args) => {
                     //TODO invoke "dispatch"
