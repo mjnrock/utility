@@ -10,11 +10,13 @@ class RenderCell extends Cellular.Cell {
         },
         Organelle.Package(
             [ "render", payload => {
-                let invoke = (event, payload) => {
+                let invoke = (action, componentName, dispatcher, ...args) => {
                     //TODO invoke "dispatch"
                 };
 
-                //TODO Write render logic
+                //TODO Write render logic that renders the JSX
+                //TODO (Initially) write the this.state update hook here for the JSX component
+                //? ReactDOM.render(element, container, ?callback) will perform smart updates on already created components: https://reactjs.org/docs/react-dom.html#render
             }],
             [ "dispatch", payload => {
                 // payload = {
@@ -42,7 +44,7 @@ class RenderCell extends Cellular.Cell {
                 //     document.getElementById('hello-example')
                 // );
 
-                // //* will JS translate into this:
+                // //* will JS-translate into this:
 
                 //! createElement documentation: https://reactjs.org/docs/react-api.html#createelement
                 // // @HelloMessage was declared as the Class so it existed by here in example
@@ -59,7 +61,6 @@ class RenderCell extends Cellular.Cell {
             delete this.GetState().templates[name];
         });
         //TODO Pass the render invocation to the actual React renderer
-        //TODO 
     }
 }
 

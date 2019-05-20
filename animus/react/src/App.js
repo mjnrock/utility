@@ -13,12 +13,23 @@ let org = new Animus.Cellular.Organelle(
     [ "test", payload => console.log(2) ],
     [ () => false, payload => console.log(3) ],
     [ () => true, payload => console.log(4) ],
+    [   // Evaluator will receive (Organelle, Enzyme) as its 2 parameters
+        (org, enz) => {
+            console.log(org, enz);
+
+            return true;
+        },
+        payload => console.log(5)
+    ],
 );
 let z1 = new Animus.Cellular.ZetaEnzyme("cats");
 let z2 = new Animus.Cellular.ZetaEnzyme("test");
 
-org.Metabolize(z1);
-org.Metabolize(z2);
+let cell = new Animus.Cellular.Cell();
+cell.Endogenize(org);
+
+cell.Metabolize(z1);
+cell.Metabolize(z2);
 
 class App extends Component {
     render() {

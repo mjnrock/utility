@@ -17,6 +17,9 @@ class Organelle extends Subscribable {
     }
 
     Metabolize(payload) {
+        console.log("-------");
+        console.log(payload);
+        console.log("-------");
 		this.Invoke(Organelle.EnumEventType.BEGIN, payload);
         
         let output = [];
@@ -30,14 +33,20 @@ class Organelle extends Subscribable {
             if(typeof step === "function") {
                 fn = step;
             } else if(typeof step[0] === "function") {
-                if(step.length === 2 && step[0](this, payload) === true) {
-                    fn = step[1];
+                if(step.length === 2) {
+                    if(step[0](this, payload) === true) {
+                        fn = step[1];
+                    } else {
+                        fn = false;
+                    }
                 } else if(step.length === 1) {
                     fn = step[0];
                 }
             } else if(typeof step[0] === "string" || step[0] instanceof String) {
-                if(step[0] === payload.GetKey()) {
+                if(step[0] === payload.flag) {
                     fn = step[1];
+                } else {
+                    fn = false;
                 }
             }
 
@@ -47,7 +56,9 @@ class Organelle extends Subscribable {
                 input = payload;
             }
             
-            if(typeof fn === "function") {
+            if(fn === false) {
+                console.info("[Skipped Iteration]: Activation condition was not met");
+            } else if(typeof fn === "function") {
                 metabolite = Metabolite.Make(payload, fn(input), i);
 
                 output.push(metabolite);
