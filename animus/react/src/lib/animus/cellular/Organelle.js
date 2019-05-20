@@ -28,7 +28,7 @@ class Organelle extends Subscribable {
                 fn;
 
             console.log("-------");
-            console.log(payload, this.Sequence);
+            console.log(payload, this.Sequence, step);
             console.log("-------");
 
             if(typeof step === "function") {

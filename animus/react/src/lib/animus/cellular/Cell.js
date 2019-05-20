@@ -5,10 +5,12 @@ import Cellular from "./package";
 import Subscribable from "./../Subscribable";
 
 class Cell extends Subscribable {
-    constructor(state = {}, organelles = []) {
+    constructor(state = {}, ...organelles) {
         super(state);
 
-        this._organelles = Object.freeze(organelles);
+        this._organelles = [];
+        this.Endogenize(...organelles);
+
         this._actions = {};
         this.ƒ = (() => new Proxy(this, {        // ALT+159 = ƒ
             get: function(cell, prop) {
@@ -50,7 +52,11 @@ class Cell extends Subscribable {
         for(let i in organelles) {
             let organelle = organelles[i];
 
-            arr.push(organelle);
+            if(organelle instanceof Cellular.Organelle) {
+                arr.push(organelle);
+            } else {
+                arr.push(Cellular.Organelle.Package(organelle));
+            }
         }
 
         this._organelles = Object.freeze(arr);

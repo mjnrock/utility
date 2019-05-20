@@ -4,6 +4,7 @@ import ReactDOM from "react-dom";
 import Cell from "./../Cell";
 import Organelle from "./../Organelle";
 
+//! Not sure if this is going to work; originally it was scoped within the "render" sub-process
 const invoke = (action, componentName, dispatcher, ...args) => {
     //TODO invoke "dispatch"
     return (
