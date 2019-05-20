@@ -13,13 +13,17 @@ let org = new Animus.Cellular.Organelle(
     [ "test", payload => console.log(2) ],
     [ () => false, payload => console.log(3) ],
     [ () => true, payload => console.log(4) ],
-    [   // Evaluator will receive (Organelle, Enzyme) as its 2 parameters
+    [   // Evaluator (if a function) will receive (Organelle, Enzyme) as its 2 parameters
         (org, enz) => {
             console.log(org, enz);
 
             return true;
         },
-        payload => console.log(5)
+        payload => {
+            console.log(payload);
+
+            console.log(5);
+        }
     ],
 );
 let z1 = new Animus.Cellular.ZetaEnzyme("cats");
