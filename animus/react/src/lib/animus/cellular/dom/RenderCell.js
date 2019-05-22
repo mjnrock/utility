@@ -30,10 +30,18 @@ class RenderCell extends Cell {
                         cont = comp.container;
                     }
                     
-                    ReactDOM.render(
-                        React.createElement(comp.element(this, this.GetState())),
-                        cont
-                    );
+                    const RenderElement = comp.element();
+                    if(RenderElement.prototype.render) {
+                        ReactDOM.render(
+                            <RenderElement _scope={ this } _state={ this.GetState() } />,
+                            cont
+                        );
+                    } else {
+                        ReactDOM.render(
+                            React.createElement(comp.element(this, this.GetState())),
+                            cont
+                        );
+                    }
                 }
             }],
             [ "dispatch", payload => {
@@ -60,20 +68,25 @@ class RenderCell extends Cell {
      * If @fn is a function, it will be passed (this, this.GetState()) from the RenderCell
      * If @fn is just JSX, it will render the static content
      */
-    AddElement(name, fn, state = {}, container = null) {
+    AddComponent(name, fn, state = {}, container = null) {
         if(container instanceof HTMLElement) {
             // NOOP
         } else if(typeof container === "string" || container instanceof String) {
             container = document.getElementById(container);
         }
 
-        this.MergeState({
+        this.SetState({
+            ...this.GetState(),
             _components: {
                 ...this.GetState()._components,
                 [name]: RenderCell.Conform(
                     name,
                     (t, s) => {
                         if(typeof fn === "function") {
+                            if(fn.prototype.render) {
+                                return fn;
+                            }
+
                             return () => fn(t, s)
                         }
         
@@ -86,6 +99,31 @@ class RenderCell extends Cell {
         });
 
         return this;
+    }
+
+    GetComponent(name) {
+        return this.GetState()._components[name];
+    }
+    GetComponentElement(name) {
+        let comp = this.GetComponent(name);
+
+        if(comp) {
+            return comp.element(this, this.GetState());
+        }
+    }
+    GetComponentState(name) {
+        let comp = this.GetComponent(name);
+
+        if(comp) {
+            return comp.state;
+        }
+    }
+    GetComponentContainer(name) {
+        let comp = this.GetComponent(name);
+
+        if(comp) {
+            return comp.container;
+        }
     }
 
     static Conform(name, element, state = {}, container = null) {

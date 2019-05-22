@@ -36,28 +36,43 @@ cell.Endogenize(org);
 // cell.Metabolize(z2);
 
 let arr = [ 1, 2, 3, 4, 5 ];
-let rend = new Animus.Cellular.DOM.RenderCell("root2");
-rend.AddElement("Kiszka", (t, s) => {
+let rend = new Animus.Cellular.DOM.RenderCell("root");
+
+
+rend.AddComponent("Kiszka", (t, s) => {
+    let Miszka = t.GetComponentElement("Miszka");
+
     return (
         <div>
-            {
-                arr.map((a, i) => <p key={ i }>{ a }</p>)
-            }
+            Kiszka
+            <Miszka _scope={ t } _state={ s } />
         </div>
-    );
-});
+    )
+}, {}, "root2");
 
-console.log(rend);
+rend.AddComponent("Miszka", class Miszka extends React.Component {
+    render() {
+        return (
+            <div>
+                <ul>
+                    {
+                        this.props._state._root.split("").map((e, i) => <li key={ i }>{ e }</li>)
+                    }
+                </ul>
+            </div>
+        );
+    }
+});
 
 let mu = new Animus.Cellular.ZetaEnzyme("render");
 rend.Metabolize(mu);
 
-setTimeout(() => {
-    arr = [ 9, 10, 11 ];
+// setTimeout(() => {
+//     arr = [ 9, 10, 11 ];
 
-    mu.Recycle();
-    rend.Metabolize(mu);
-}, 1500);
+//     mu.Recycle();
+//     rend.Metabolize(mu);
+// }, 1500);
 
 // console.log(org);
 // console.log(rend);
