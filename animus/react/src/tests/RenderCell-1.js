@@ -28,25 +28,52 @@ cell.Endogenize(org);
 // cell.Metabolize(z1);
 // cell.Metabolize(z2);
 
-let rend = new Animus.Cellular.DOM.RenderCell();
+let arr = [ 1, 2, 3, 4, 5 ];
+let rend = new Animus.Cellular.DOM.RenderCell("root");
 
-rend.HTMLTestVariable = 1594984984;
-rend.MergeState({
-    cats: 15615
-});
-rend.MergeState({
-    // cats: 15615, //! This doesn't work, must be set in separate declaration
-    test: (
+
+rend.AddComponent("Kiszka", (t, s) => {
+    let Miszka = t.GetComponentElement("Miszka"),
+        handler = (e) => console.log(e);
+
+    return (
         <div>
-            <div>RenderCell Output!</div>
-            <div>{ rend.GetState().cats }</div>
-            <div>{ rend.HTMLTestVariable }</div>
+            Kiszka
+            <Miszka _scope={ t } _state={ s } _handler={ handler }>
+                <Miszka _scope={ t } _state={ s } _handler={ handler } />
+                <Miszka _scope={ t } _state={ s } _handler={ handler } />
+                <Miszka _scope={ t } _state={ s } _handler={ handler } />
+            </Miszka>
         </div>
     )
+}, {}, "root2");
+
+rend.AddComponent("Miszka", class Miszka extends React.Component {
+    render() {
+        return (
+            <div onClick={ this.props._handler }>
+                <ul>
+                    {
+                        this.props._state._root.split("").map((e, i) => <li key={ i }>{ e }</li>)
+                    }
+                </ul>
+                {
+                    this.props.children
+                }
+            </div>
+        );
+    }
 });
 
 let mu = new Animus.Cellular.ZetaEnzyme("render");
+rend.Metabolize(mu);
+
+// setTimeout(() => {
+//     arr = [ 9, 10, 11 ];
+
+//     mu.Recycle();
+//     rend.Metabolize(mu);
+// }, 1500);
 
 // console.log(org);
 // console.log(rend);
-rend.Metabolize(mu);

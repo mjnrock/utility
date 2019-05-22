@@ -40,12 +40,17 @@ let rend = new Animus.Cellular.DOM.RenderCell("root");
 
 
 rend.AddComponent("Kiszka", (t, s) => {
-    let Miszka = t.GetComponentElement("Miszka");
+    let Miszka = t.GetComponentElement("Miszka"),
+        handler = (e) => console.log(e);
 
     return (
         <div>
             Kiszka
-            <Miszka _scope={ t } _state={ s } />
+            <Miszka _scope={ t } _state={ s } _handler={ handler }>
+                <Miszka _scope={ t } _state={ s } _handler={ handler } />
+                <Miszka _scope={ t } _state={ s } _handler={ handler } />
+                <Miszka _scope={ t } _state={ s } _handler={ handler } />
+            </Miszka>
         </div>
     )
 }, {}, "root2");
@@ -53,12 +58,15 @@ rend.AddComponent("Kiszka", (t, s) => {
 rend.AddComponent("Miszka", class Miszka extends React.Component {
     render() {
         return (
-            <div>
+            <div onClick={ this.props._handler }>
                 <ul>
                     {
                         this.props._state._root.split("").map((e, i) => <li key={ i }>{ e }</li>)
                     }
                 </ul>
+                {
+                    this.props.children
+                }
             </div>
         );
     }
