@@ -38,7 +38,7 @@ cell.Endogenize(org);
 let arr = [ 1, 2, 3, 4, 5 ];
 let rend = new Animus.Cellular.DOM.RenderCell("root");
 
-
+//TODO Pass the handler into component so it has a permanent link to external scope; route events through handler to Animus
 rend.AddComponent("Kiszka", (t, s) => {
     let Miszka = t.GetComponentElement("Miszka"),
         handler = (e) => console.log(e);
