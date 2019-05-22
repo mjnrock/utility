@@ -1,28 +1,60 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Cellular from "../package";
+
+import Cell from "./../Cell";
+import Organelle from "./../Organelle";
+
+//! Not sure if this is going to work; originally it was scoped within the "render" sub-process
+const invoke = (action, componentName, dispatcher, ...args) => {
+    //TODO invoke "dispatch"
+    return (
+        <span>Dogs</span>
+    )
+};
 
 //  https://reactjs.org/
-class RenderCell extends Cellular.Cell {
-    constructor() {
+class RenderCell extends Cell {
+    constructor(rootId = "root") {
         super({
-            _elements: {}, // key = component name, value = React.createClass()
+            _root: rootId,
+            _components: {}, // key = component name, value = React.createClass()
             // containers: {}, //! Figure out a way to allow for this Cell to use ReactDOM.render() on mutiple containers
-            test: (
-                <div>Cats</div>
-            )
         },
-        Cellular.Organelle.Make(
+        Organelle.Make(
             [ "render", payload => {
-                let invoke = (action, componentName, dispatcher, ...args) => {
-                    //TODO invoke "dispatch"
-                };
+                for(let key in this.GetState()._components) {
 
-                ReactDOM.render(this.GetState().test, document.getElementById("root2"));
+                    console.log(this.GetState());
 
-                //TODO Write render logic that renders the JSX
-                //TODO (Initially) write the this.state update hook here for the JSX component
-                //? ReactDOM.render(element, container, ?callback) will perform smart updates on already created components: https://reactjs.org/docs/react-dom.html#render
+                    let comp = this.GetState()._components[key],
+                        cont = document.getElementById(this.GetState()._root);
+
+                    if(comp.container !== null && comp.container !== void 0) {
+                        cont = comp.container;
+                    }
+                    
+                    ReactDOM.render(
+                        React.createElement(comp.element(this, this.GetState())),
+                        cont
+                    );
+                }
+                // .forEach((comp, i) => {
+                //     ReactDOM.render(
+                //         React.createElement(comp.element(this, this.GetState())),
+                //         document.getElementById("root2")
+                //     );
+                // });
+
+
+                // ReactDOM.render(
+                //     //TODO "this.GetState().test" is obviously a test, this must actually iterate through all elements and render accordingly
+                //     React.createElement(this.GetState().test(this, this.GetState())),
+                //     document.getElementById("root2")
+                    
+                //     //? Must decide on how the "container" will be passed here (as entry in state or dynamically through @payload from enzyme)
+                //     // React.createElement(this.GetState().test.element(this, this.GetState())),
+                //     // document.getElementById(payload.container) OR document.getElementById(this.GetState().test.container)
+                // );
             }],
             [ "dispatch", payload => {
                 // payload = {
@@ -36,37 +68,67 @@ class RenderCell extends Cellular.Cell {
                     let state = this.GetState()[payload.key];
                     state["dispatchers"][payload.dispatcher](this, state, ...payload.args);
                 }
-            }],
-
-
-
-
-            //? A ZetaEnzyme("render") will invoke this function to re-render DOM content for a DOM-Element
-            [ "render", () => {
-                //! Reread about Fragments: https://reactjs.org/docs/react-api.html#reactfragment, https://reactjs.org/blog/2017/11/28/react-v16.2.0-fragment-support.html#keyed-fragments
-                //TODO Rework this example to fit this Cell
-                // ReactDOM.render(
-                //     <HelloMessage name="Taylor" />,
-                //     document.getElementById('hello-example')
-                // );
-
-                // //* will JS-translate into this:
-
-                //! createElement documentation: https://reactjs.org/docs/react-api.html#createelement
-                // // @HelloMessage was declared as the Class so it existed by here in example
-                // ReactDOM.render(React.createElement(HelloMessage, { name: "Taylor" }), document.getElementById('hello-example'))
             }]
         ));
 
-        //TODO Behaviors should be turned into AQT tags and this._actions should be an AQT root tag.
-        //? TODO-change allows for Behaviors to be translated into AQT transformations
-        this.Learn("class-add", (name, reactClassObj) => {
-            this.GetState()._elements[name] = React.createClass(reactClassObj);
+        // //  This adds "this.GetState().cats"
+        // this.MergeState({
+        //     cats: "State Test"
+        // });
+        // //  This adds "this.GetState().test"  //! Without this, the "render" will currently fail as it looks for "this.GetState().test"
+        // this.AddElement("test", (t, s) => (
+        //     <div>
+        //         { s.cats }
+        //     </div>
+        // ));
+        // this.AddElement("test", (
+        //     <div>
+        //         NO DYNAMIC CONTENT TEST
+        //     </div>
+        // ));
+        // //  This won't show if the state isn't dynamically queried on render
+        // this.MergeState({
+        //     cats: "State Overwrite Test"
+        // });
+    }
+
+    //! This is likely not complete, as it has not been tested on React > refs and DOM event handling (e.g. onclick, onsubmit, etc.)
+    //! c.f. const invoke = ... above
+    /**
+     * @param {string} name The name of the (React class) component
+     * @param {function|JSX} fn
+     * If @fn is a function, it will be passed (this, this.GetState()) from the RenderCell
+     * If @fn is just JSX, it will render the static content
+     */
+    AddElement(name, fn, state = {}, container = null) {
+        this.MergeState({
+            _components: {
+                ...this.GetState()._components,
+                [name]: RenderCell.Conform(
+                    name,
+                    (t, s) => {
+                        if(typeof fn === "function") {
+                            return () => fn(t, s)
+                        }
+        
+                        return () => fn;
+                    },
+                    state,
+                    container
+                )
+            }
         });
-        this.Learn("class-remove", (name) => {
-            delete this.GetState()._elements[name];
-        });
-        //TODO Pass the render invocation to the actual React renderer
+
+        return this;
+    }
+
+    static Conform(name, element, state = {}, container = null) {
+        return {
+            name,
+            element,
+            state,
+            container
+        };
     }
 }
 

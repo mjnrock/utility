@@ -35,14 +35,33 @@ cell.Endogenize(org);
 // cell.Metabolize(z1);
 // cell.Metabolize(z2);
 
-let rend = new Animus.Cellular.DOM.RenderCell();
+let arr = [ 1, 2, 3, 4, 5 ];
+let rend = new Animus.Cellular.DOM.RenderCell("root2");
+rend.AddElement("Kiszka", (t, s) => {
+    return (
+        <div>
+            {
+                arr.map((a, i) => <p key={ i }>{ a }</p>)
+            }
+        </div>
+    );
+});
+
+console.log(rend);
 
 let mu = new Animus.Cellular.ZetaEnzyme("render");
+rend.Metabolize(mu);
+
+setTimeout(() => {
+    arr = [ 9, 10, 11 ];
+
+    mu.Recycle();
+    rend.Metabolize(mu);
+}, 1500);
 
 // console.log(org);
 // console.log(rend);
 
-rend.Metabolize(mu);
 
 class App extends Component {
     render() {
