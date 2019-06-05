@@ -1,14 +1,15 @@
 import { NewUUID } from "./../utility/Helper";
 
 class Quantum {
-    constructor(type, { value = void 0,  key = null, uuid = NewUUID(), timestamp = Date.now(), ordinality = null } = {}) {
+    constructor(type, { value = void 0,  key = null, uuid = NewUUID(), timestamp = Date.now(), ordinality = null, variant = null } = {}) {
         this._type = type;
         this._value = value;
         this._meta = {
             _id: uuid,
             _key: key,
             _origin: timestamp,
-            _ordinality: ordinality
+            _ordinality: ordinality,
+            _variant: variant
         };
     }
 
@@ -93,6 +94,15 @@ class Quantum {
         return this;
     }
 
+    GetVariant() {
+        return this._meta._variant;
+    }
+    SetVariant(variant) {
+        this._meta._variant = variant;
+
+        return this;
+    }
+
     Serialize() {
         return JSON.stringify(this);
     }
@@ -132,6 +142,21 @@ Quantum.EnumType = Object.freeze({
     COLLECTION: 7
 });
 
+Quantum.EnumVariantType = Object.freeze({
+    UUID: 1,
+    JSON: 2
+});
+
+Quantum.VariantMapping = Object.freeze({
+    BOOLEAN: [],
+    NUMERIC: [],
+    STRING: [ "UUID", "JSON" ],
+    ARRAY: [],
+    OBJECT: [],
+    FUNCTION: [],
+    COLLECTION: []
+});
+
 Quantum.EnumAttributeType = Object.freeze({
     TYPE: 1,
     VALUE: 2,
@@ -139,27 +164,25 @@ Quantum.EnumAttributeType = Object.freeze({
     ID: 4,
     KEY: 5,
     ORIGIN: 6,
-    ORDINALITY: 7
+    ORDINALITY: 7,
+    VARIANT: 8
 });
 
 Quantum.ReverseEnum = (_enum, value) => {
     _enum = _enum.replace(/enum/gi, "");
+    let iter;
     
     if(_enum.toLowerCase() === "type") {
-        let iter = Object.entries(Quantum.EnumType);
-
-        for(let i in iter) {
-            if(value === iter[i][1]) {
-                return iter[i][0];
-            }
-        }
+        iter = Object.entries(Quantum.EnumType);
+    } else if(_enum.toLowerCase() === "varianttype") {
+        iter = Object.entries(Quantum.EnumVariantType);
     } else if(_enum.toLowerCase() === "attributetype") {
-        let iter = Object.entries(Quantum.EnumAttributeType);
+        iter = Object.entries(Quantum.EnumAttributeType);
+    }
 
-        for(let i in iter) {
-            if(value === iter[i][1]) {
-                return iter[i][0];
-            }
+    for(let i in iter) {
+        if(value === iter[i][1]) {
+            return iter[i][0];
         }
     }
 

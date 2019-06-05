@@ -13,6 +13,8 @@ import QCollection from "./QCollection";
 import Transformer from "./Transformer";
 import Parser from "./Parser";
 
+import Nuance from "./nuance/package";
+
 export default {
     Quantum,
 
@@ -26,5 +28,7 @@ export default {
     QCollection,
 
     Transformer,
-    Parser
+    Parser,
+    
+    Nuance
 }
