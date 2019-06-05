@@ -56,7 +56,7 @@ const TSQLPool = new mssql.ConnectionPool(config)
 
 		return pool;
 	})
-	.catch(err => console.log("Database Connection Failed! Bad Config: ", err));
+    .catch(err => console.log("Database Connection Failed! Bad Config: ", err));
 
 app.get("/api/:schema", async (req, res) => {
     try {
