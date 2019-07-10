@@ -1,0 +1,21 @@
+{
+  "name": "animus",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "Matt Nawrocki",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "esm": "^3.2.1",
+    "express": "^4.16.4",
+    "express-ws": "^4.0.0",
+    "lodash": "^4.17.11",
+    "mssql": "^5.1.0",
+    "rxjs": "^6.4.0",
+    "ws": "^6.2.1"
+  }
+}
