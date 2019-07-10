@@ -29,16 +29,21 @@
 
 			console.log(db.Select(["a"]));
 			db.Update({ a: "cats" }, (x, y, key, value) => y === 3);
-			db.Change({ a: "fish" }, 3);
+			db.AddColumn("k");
+			db.Change({ k: "fish" }, 3);
 			console.log(db.Select(["a"]));
+			console.log(db);
 
-			// db.Elements.ForEach((...args) => console.log(...args));
+			db.Elements.ForEach((x, y, k, v, e, i, a, t) => {
+				$("ul").append(`<li>${ v }</li>`);
+			});
 			// let map = db.Elements.Map((x, y, k, v, e, i, a, t) => v);
 			// console.log(map);
 		</script>
 
 		<div class="container">
 			<p>This is a test</p>
+			<ul></ul>
 		</div>
 	</body>
 </html>

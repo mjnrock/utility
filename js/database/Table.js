@@ -30,13 +30,16 @@ class Table {
 
 		return this;
 	}
+	
 	Update(payload = {}, where = null) {
 		this.Elements.ForEach(( x, y, key, value, entry, i, eles, t) => {
 			if(where(x, y, key, value, entry, i, eles, t) === true) {
-				for(let key in payload) {
-					let value = payload[key];
+				for(let k in payload) {
+					let val = payload[k];
 		
-					this.Elements.Set(key, y, value);
+					if(this.Headers.includes(k)) {
+						this.Elements.Set(this.Headers.indexOf(k), y, val);
+					}
 				}
 			}
 		});
@@ -46,17 +49,19 @@ class Table {
 	Change(payload = {}, row) {
 		this.Elements.ForEach(( x, y, key, value, entry, i, eles, t) => {
 			if(y === +row) {
-				for(let key in payload) {
-					let value = payload[key];
+				for(let k in payload) {
+					let val = payload[k];
 		
-					this.Elements.Set(key, y, value);
+					if(this.Headers.includes(k)) {
+						this.Elements.Set(this.Headers.indexOf(k), y, val);
+					}
 				}
 			}
 		});
 
 		return this;
 	}
-	
+
 	//@returns [ KEY, VALUE, [ KEY, VALUE ], i, this.Elements, this, ...varargs ]
 	/**
 	 * @param {array} cols 
